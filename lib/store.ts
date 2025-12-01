@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 import { addEdge, applyEdgeChanges, applyNodeChanges, Connection, EdgeChange, NodeChange } from "@xyflow/react";
 import { generateNodeId } from "@/lib/css-generator";
 import { CustomEdge, CustomNode, NodeType } from "@/lib/types";
@@ -22,7 +23,9 @@ interface FlowStore {
   setCopied: (copied: boolean) => void;
 }
 
-export const useFlowStore = create<FlowStore>((set, get) => ({
+export const useFlowStore = create<FlowStore>()(
+  persist(
+    (set, get) => ({
   // Initial state
   nodes: [],
   edges: [],
@@ -96,5 +99,16 @@ export const useFlowStore = create<FlowStore>((set, get) => ({
 
   setIsExportDialogOpen: (open) => set({ isExportDialogOpen: open }),
   setCopied: (copied) => set({ copied }),
-}));
+    }),
+    {
+      name: "flow-store", // unique name for localStorage key
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        // Only persist nodes and edges, not UI state
+        nodes: state.nodes,
+        edges: state.edges,
+      }),
+    }
+  )
+);
 
