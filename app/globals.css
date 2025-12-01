@@ -1,3 +1,4 @@
+@import "reactflow/dist/style.css";
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -118,5 +119,27 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.react-flow {
+  .react-flow__handle {
+    @apply size-5 bg-primary translate-x-1/2;
+  }
+
+  .react-flow__handle-right {
+    @apply right-0;
+  }
+
+  .react-flow__handle-left {
+    @apply left-0;
+  }
+
+  .react-flow__handle-top {
+    @apply top-0;
+  }
+
+  .react-flow__handle-bottom {
+    @apply bottom-0;
   }
 }
