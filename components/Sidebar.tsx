@@ -94,7 +94,7 @@ const Sidebar = ({ onDragStart }: SidebarProps) => {
   }, {} as Record<string, typeof nodeTypes>);
 
   return (
-    <div className="w-64 h-full bg-card border-r border-border p-4 space-y-4 overflow-y-auto">
+    <div className="w-64 h-full bg-card border-r border-border p-4 space-y-4 overflow-y-auto shrink-0">
       <h2 className="text-sm font-semibold mb-4">Nodes</h2>
       {Object.entries(groupedNodes).map(([category, nodes]) => (
         <div key={category} className="space-y-2">

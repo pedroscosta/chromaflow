@@ -1,17 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { generateCSSVariables, generateNodeId } from "@/lib/css-generator";
+import { generateNodeId } from "@/lib/css-generator";
 import { CustomEdge, CustomNode, NodeType } from "@/lib/types";
-import { Check, Copy, Download } from "lucide-react";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import ReactFlow, {
   addEdge,
   applyEdgeChanges,
@@ -69,7 +60,6 @@ const FlowEditor = ({
   onEdgesChange,
 }: FlowEditorProps) => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const [isExportDialogOpen, setIsExportDialogOpen] = useState(false);
 
   const handleNodesChange = useCallback(
     (changes: NodeChange[]) => {
@@ -143,96 +133,26 @@ const FlowEditor = ({
     [nodes, onNodesChange]
   );
 
-  const handleExportClick = useCallback(() => {
-    setIsExportDialogOpen(true);
-  }, []);
-
-  const [copied, setCopied] = useState(false);
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(cssExport);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const cssVariables = generateCSSVariables(nodes, edges);
-  const cssExport = useMemo(() => {
-    if (cssVariables.length === 0) {
-      return ":root {\n  /* Add nodes to generate CSS variables */\n}";
-    }
-    return `:root {\n${cssVariables.map((v) => `  ${v.name}: ${v.value};`).join("\n")}\n}`;
-  }, [cssVariables]);
-
   return (
     <ReactFlowProvider>
       <FlowProvider updateNodeData={updateNodeData} edges={edges}>
-        <div className="w-full h-full flex flex-col">
-          <nav className="w-full border-b bg-sidebar px-4 py-3 flex items-center justify-between">
-            <h1 className="text-lg font-semibold">Parametric Palette Editor</h1>
-            <Button onClick={handleExportClick} variant="default" size="default">
-              <Download className="size-4" />
-              Export
-            </Button>
-          </nav>
-          <div className="flex-1 w-full" ref={reactFlowWrapper}>
-            <ReactFlow
-              nodes={nodes as any}
-              edges={edges as any}
-              onNodesChange={handleNodesChange}
-              onEdgesChange={handleEdgesChange}
-              onConnect={onConnect}
-              onDrop={onDrop}
-              onDragOver={onDragOver}
-              nodeTypes={nodeTypes}
-              fitView
-            >
-              <Background />
-              <Controls />
-              <MiniMap />
-            </ReactFlow>
-          </div>
-        </div>
-        <Dialog open={isExportDialogOpen} onOpenChange={setIsExportDialogOpen}>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>Export CSS Variables</DialogTitle>
-              <DialogDescription>
-                Copy the CSS variables below to use in your project.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="relative">
-                <textarea
-                  readOnly
-                  value={cssExport}
-                  className="w-full h-64 p-4 bg-muted rounded-md border font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring"
-                  onClick={(e) => {
-                    const target = e.target as HTMLTextAreaElement;
-                    target.select();
-                  }}
-                />
-              </div>
-              <div className="flex justify-end gap-2">
-              <Button
-            size="sm"
-            onClick={handleCopy}
-            className="h-8"
+        <div className="w-full h-full" ref={reactFlowWrapper}>
+          <ReactFlow
+            nodes={nodes as any}
+            edges={edges as any}
+            onNodesChange={handleNodesChange}
+            onEdgesChange={handleEdgesChange}
+            onConnect={onConnect}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
+            nodeTypes={nodeTypes}
+            fitView
           >
-            {copied ? (
-              <>
-                <Check className="w-3 h-3 mr-1" />
-                Copied
-              </>
-            ) : (
-              <>
-                <Copy className="w-3 h-3 mr-1" />
-                Copy
-              </>
-            )}
-          </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+            <Background />
+            <Controls />
+            <MiniMap />
+          </ReactFlow>
+        </div>
       </FlowProvider>
     </ReactFlowProvider>
   );
