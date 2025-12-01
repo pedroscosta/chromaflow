@@ -4,12 +4,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { KebabCaseInput } from "@/components/ui/kebab-case-input";
 import { Label } from "@/components/ui/label";
+import { useFlowStore } from "@/lib/store";
 import { InputColorData } from "@/lib/types";
 import { NodeProps, Position } from "@xyflow/react";
 import Color from "colorjs.io";
 import { useCallback } from "react";
-import { useFlowStore } from "@/lib/store";
 import FlowHandle from "../FlowHandle";
+import { Button } from "../ui/button";
+import { ColorPicker } from "../ui/color-picker";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 interface InputColorNodeProps extends NodeProps {
   data: InputColorData;
@@ -45,20 +48,6 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
     }
   }, [color]);
 
-  const handleHexColorChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      try {
-        const hex = e.target.value;
-        const c = new Color(hex);
-        const oklch = c.to("oklch").toString({ format: "oklch" });
-        updateNodeData(id, { color: oklch });
-      } catch {
-        // Invalid color, ignore
-      }
-    },
-    [id, updateNodeData]
-  );
-
   return (
     <Card className={`min-w-[200px] p-0 ${selected ? "ring-2 ring-primary" : ""}`}>
       <CardContent className="py-4 px-4 space-y-3">
@@ -79,13 +68,14 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
             Color
           </Label>
           <div className="relative flex gap-2">
-            <Input
-              id={`color-${id}`}
-              type="color"
-              value={getHexColor()}
-              onChange={handleHexColorChange}
-              className="h-8 w-16 p-1 cursor-pointer"
-            />
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="icon" className="size-8" style={{ background: getHexColor() }} />
+              </PopoverTrigger>
+              <PopoverContent>
+                <ColorPicker onChange={(newColor) => updateNodeData(id, { color: newColor })} value={color} />
+              </PopoverContent>
+            </Popover>
             <Input
               value={color}
               onChange={handleColorChange}
