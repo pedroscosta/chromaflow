@@ -91,7 +91,14 @@ const generateExpression = (
   ];
 
   if (operationTypes.includes(node.type as OperationType)) {
-    const operation = node.type as OperationType;
+    let operation = node.type as OperationType;
+
+    // For lighten/darken nodes, check the isDarken flag in data
+    if (node.type === "lighten" || node.type === "darken") {
+      const nodeData = node.data as { isDarken?: boolean };
+      const isDarken = nodeData.isDarken ?? (node.type === "darken");
+      operation = isDarken ? "darken" : "lighten";
+    }
 
     // Get input edges - sort by handle id to maintain order
     const inputEdges = edges

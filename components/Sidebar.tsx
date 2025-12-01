@@ -1,23 +1,19 @@
 "use client";
 
-import { useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { NodeType } from "@/lib/types";
 import {
-  Palette,
-  Hash,
-  Download,
-  Sun,
-  Moon,
-  Droplet,
-  Droplets,
-  RotateCw,
   Blend,
+  Download,
+  Droplet,
+  Hash,
+  Palette,
   Plus,
-  Minus,
-  X,
-  Divide,
+  RotateCw,
+  Sun,
+  X
 } from "lucide-react";
+import { useCallback } from "react";
 
 interface SidebarProps {
   onDragStart: (event: React.DragEvent, nodeType: NodeType) => void;
@@ -51,21 +47,9 @@ const Sidebar = ({ onDragStart }: SidebarProps) => {
       category: "Color Operations",
     },
     {
-      type: "darken",
-      label: "Darken",
-      icon: <Moon className="w-4 h-4" />,
-      category: "Color Operations",
-    },
-    {
       type: "saturate",
       label: "Saturate",
       icon: <Droplet className="w-4 h-4" />,
-      category: "Color Operations",
-    },
-    {
-      type: "desaturate",
-      label: "Desaturate",
-      icon: <Droplets className="w-4 h-4" />,
       category: "Color Operations",
     },
     {
@@ -87,21 +71,9 @@ const Sidebar = ({ onDragStart }: SidebarProps) => {
       category: "Number Operations",
     },
     {
-      type: "subtract",
-      label: "Subtract",
-      icon: <Minus className="w-4 h-4" />,
-      category: "Number Operations",
-    },
-    {
       type: "multiply",
       label: "Multiply",
       icon: <X className="w-4 h-4" />,
-      category: "Number Operations",
-    },
-    {
-      type: "divide",
-      label: "Divide",
-      icon: <Divide className="w-4 h-4" />,
       category: "Number Operations",
     },
     {

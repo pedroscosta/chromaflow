@@ -42,7 +42,12 @@ export interface OutputData {
   inputNodeId: string; // Node ID to output
 }
 
-export type NodeData = InputColorData | InputNumberData | OutputData | Record<string, never>;
+export interface LightenDarkenData {
+  isDarken?: boolean;
+  [key: string]: unknown;
+}
+
+export type NodeData = InputColorData | InputNumberData | OutputData | LightenDarkenData | Record<string, unknown>;
 
 export interface CustomNode extends Node {
   type: NodeType;

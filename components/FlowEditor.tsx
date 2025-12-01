@@ -27,7 +27,6 @@ import ReactFlow, {
 } from "reactflow";
 import { FlowProvider } from "./FlowContext";
 import AddNode from "./nodes/AddNode";
-import DarkenNode from "./nodes/DarkenNode";
 import DesaturateNode from "./nodes/DesaturateNode";
 import DivideNode from "./nodes/DivideNode";
 import InputColorNode from "./nodes/InputColorNode";
@@ -45,7 +44,7 @@ const nodeTypes: NodeTypes = {
   inputNumber: InputNumberNode,
   output: OutputNode,
   lighten: LightenNode,
-  darken: DarkenNode,
+  darken: LightenNode,
   saturate: SaturateNode,
   desaturate: DesaturateNode,
   rotate: RotateNode,
@@ -119,6 +118,8 @@ const FlowEditor = ({
             ? { name: "", value: 0 }
             : nodeType === "output"
             ? { name: "", inputNodeId: "" }
+            : nodeType === "lighten" || nodeType === "darken"
+            ? { isDarken: nodeType === "darken" }
             : {},
       };
 
@@ -165,8 +166,8 @@ const FlowEditor = ({
     <ReactFlowProvider>
       <FlowProvider updateNodeData={updateNodeData} edges={edges}>
         <div className="w-full h-full flex flex-col">
-          <nav className="w-full border-b bg-background px-4 py-3 flex items-center justify-between">
-            <h1 className="text-lg font-semibold">Parametric Palette</h1>
+          <nav className="w-full border-b bg-sidebar px-4 py-3 flex items-center justify-between">
+            <h1 className="text-lg font-semibold">Parametric Palette Editor</h1>
             <Button onClick={handleExportClick} variant="default" size="default">
               <Download className="size-4" />
               Export
