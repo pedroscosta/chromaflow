@@ -21,6 +21,7 @@ interface FlowStore {
   onDrop: (event: React.DragEvent, reactFlowBounds: DOMRect) => void;
   setIsExportDialogOpen: (open: boolean) => void;
   setCopied: (copied: boolean) => void;
+  importState: (nodes: CustomNode[], edges: CustomEdge[]) => void;
 }
 
 export const useFlowStore = create<FlowStore>()(
@@ -99,6 +100,7 @@ export const useFlowStore = create<FlowStore>()(
 
   setIsExportDialogOpen: (open) => set({ isExportDialogOpen: open }),
   setCopied: (copied) => set({ copied }),
+  importState: (nodes, edges) => set({ nodes, edges }),
     }),
     {
       name: "flow-store", // unique name for localStorage key
