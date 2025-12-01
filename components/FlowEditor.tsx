@@ -212,7 +212,6 @@ const FlowEditor = ({
               </div>
               <div className="flex justify-end gap-2">
               <Button
-            variant="outline"
             size="sm"
             onClick={handleCopy}
             className="h-8"
