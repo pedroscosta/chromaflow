@@ -4,8 +4,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { KebabCaseInput } from "@/components/ui/kebab-case-input";
 import { OutputData } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { NodeProps, Position } from "@xyflow/react";
 import { useCallback } from "react";
-import { NodeProps, Position } from "reactflow";
 import { useFlowContext } from "../FlowContext";
 import FlowHandle from "../FlowHandle";
 

@@ -1,4 +1,4 @@
-@import "reactflow/dist/style.css";
+@import "@xyflow/react/dist/style.css";
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -123,7 +123,7 @@
 
 .react-flow {
   .react-flow__node-output {
-    @apply bg-transparent! border-none!;
+    @apply bg-transparent! border-none! shadow-none!;
   }
   .react-flow__handle {
     --handle-color: var(--primary);

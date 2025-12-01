@@ -9,9 +9,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { NodeProps, Position } from "@xyflow/react";
 import { ArrowDownUp } from "lucide-react";
 import { useCallback, useMemo } from "react";
-import { NodeProps, Position } from "reactflow";
 import { useFlowContext } from "../FlowContext";
 import FlowHandle from "../FlowHandle";
 

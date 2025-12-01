@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import { KebabCaseInput } from "@/components/ui/kebab-case-input";
 import { Label } from "@/components/ui/label";
 import { InputNumberData } from "@/lib/types";
+import { NodeProps, Position } from "@xyflow/react";
 import { useCallback } from "react";
-import { NodeProps, Position } from "reactflow";
 import { useFlowContext } from "../FlowContext";
 import FlowHandle from "../FlowHandle";
 

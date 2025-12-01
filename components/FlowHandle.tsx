@@ -1,7 +1,7 @@
 "use client";
 
+import { Handle, HandleProps, useNodeId } from "@xyflow/react";
 import { useMemo } from "react";
-import { Handle, HandleProps, useNodeId } from "reactflow";
 import { useFlowContext } from "./FlowContext";
 
 type HandleCategory = "number" | "color";

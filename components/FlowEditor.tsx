@@ -2,20 +2,23 @@
 
 import { generateNodeId } from "@/lib/css-generator";
 import { CustomEdge, CustomNode, NodeType } from "@/lib/types";
-import { useCallback, useRef } from "react";
-import ReactFlow, {
+import {
   addEdge,
   applyEdgeChanges,
   applyNodeChanges,
   Background,
+  ColorMode,
   Connection,
   Controls,
   EdgeChange,
   MiniMap,
   NodeChange,
   NodeTypes,
-  ReactFlowProvider,
-} from "reactflow";
+  ReactFlow,
+  ReactFlowProvider
+} from "@xyflow/react";
+import { useTheme } from "next-themes";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FlowProvider } from "./FlowContext";
 import AddNode from "./nodes/AddNode";
 import InputColorNode from "./nodes/InputColorNode";
@@ -57,6 +60,14 @@ const FlowEditor = ({
   onEdgesChange,
 }: FlowEditorProps) => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
+
+  const { theme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  // useEffect only runs on the client, so now we can safely show the UI
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleNodesChange = useCallback(
     (changes: NodeChange[]) => {
@@ -150,6 +161,7 @@ const FlowEditor = ({
             onDragOver={onDragOver}
             nodeTypes={nodeTypes}
             fitView
+            colorMode={mounted ? (theme as ColorMode) ?? "system" : undefined}
           >
             <Background />
             <Controls />

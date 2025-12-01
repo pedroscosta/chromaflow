@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { Position, NodeProps } from "reactflow";
+import { NodeProps, Position } from "@xyflow/react";
 import FlowHandle from "../FlowHandle";
 
 interface MixNodeProps extends NodeProps {
