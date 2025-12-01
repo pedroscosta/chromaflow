@@ -123,11 +123,11 @@
 
 .react-flow {
   .react-flow__handle {
-    @apply size-5 bg-primary translate-x-1/2;
+    @apply size-3 bg-transparent ring ring-offset-background ring-offset-2 border-none! translate-x-1/2;
   }
 
   .react-flow__handle-right {
-    @apply right-0;
+    @apply -right-4;
   }
 
   .react-flow__handle-left {

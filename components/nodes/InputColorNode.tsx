@@ -26,11 +26,18 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
     [id, updateNodeData]
   );
 
+  const convertToKebabCase = useCallback((value: string) => {
+    return value
+      .toLowerCase()
+      .replace(/[ _]+/g, "-")
+  }, []);
+
   const handleNameChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      updateNodeData(id, { name: e.target.value });
+      const kebabCaseValue = convertToKebabCase(e.target.value);
+      updateNodeData(id, { name: kebabCaseValue });
     },
-    [id, updateNodeData]
+    [id, updateNodeData, convertToKebabCase]
   );
 
   // Convert OKLCH to hex for color input
@@ -58,12 +65,12 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
   );
 
   return (
-    <Card className={`min-w-[200px] ${selected ? "ring-2 ring-primary" : ""}`}>
-      <CardContent className="p-4 space-y-3">
-        <div className="space-y-2">
-          <Label htmlFor={`name-${id}`} className="text-xs font-semibold">
-            Name
-          </Label>
+    <Card className={`min-w-[200px] p-0 ${selected ? "ring-2 ring-primary" : ""}`}>
+      <CardContent className="py-4 px-0 space-y-3">
+        <div className="space-y-2 px-4">
+          <div className="text-xs font-semibold">
+            Color input
+          </div>
           <Input
             id={`name-${id}`}
             value={name}
@@ -72,11 +79,11 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
             className="h-8 text-sm"
           />
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2 px-4">
           <Label htmlFor={`color-${id}`} className="text-xs font-semibold">
-            Color (OKLCH)
+            Color
           </Label>
-          <div className="flex gap-2">
+          <div className="relative flex gap-2">
             <Input
               id={`color-${id}`}
               type="color"
@@ -90,13 +97,9 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
               placeholder="oklch(0.5 0.2 180)"
               className="h-8 text-xs font-mono flex-1"
             />
+            <Handle type="source" position={Position.Right} />
           </div>
         </div>
-        <div
-          className="w-full h-8 rounded border-2 border-border"
-          style={{ backgroundColor: getHexColor() }}
-        />
-        <Handle type="source" position={Position.Right} />
       </CardContent>
     </Card>
   );
