@@ -8,7 +8,7 @@ import { InputColorData } from "@/lib/types";
 import { NodeProps, Position } from "@xyflow/react";
 import Color from "colorjs.io";
 import { useCallback } from "react";
-import { useFlowContext } from "../FlowContext";
+import { useFlowStore } from "@/lib/store";
 import FlowHandle from "../FlowHandle";
 
 interface InputColorNodeProps extends NodeProps {
@@ -16,7 +16,7 @@ interface InputColorNodeProps extends NodeProps {
 }
 
 const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
-  const { updateNodeData } = useFlowContext();
+  const updateNodeData = useFlowStore((state) => state.updateNodeData);
   const color = data.color || "oklch(0.5 0.2 180)";
   const name = data.name || "";
 

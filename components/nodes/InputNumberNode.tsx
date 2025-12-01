@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { InputNumberData } from "@/lib/types";
 import { NodeProps, Position } from "@xyflow/react";
 import { useCallback } from "react";
-import { useFlowContext } from "../FlowContext";
+import { useFlowStore } from "@/lib/store";
 import FlowHandle from "../FlowHandle";
 
 interface InputNumberNodeProps extends NodeProps {
@@ -15,7 +15,7 @@ interface InputNumberNodeProps extends NodeProps {
 }
 
 const InputNumberNode = ({ data, id, selected }: InputNumberNodeProps) => {
-  const { updateNodeData } = useFlowContext();
+  const updateNodeData = useFlowStore((state) => state.updateNodeData);
   const value = data.value?.toString() || "0";
   const name = data.name || "";
 

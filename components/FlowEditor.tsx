@@ -1,25 +1,17 @@
 "use client";
 
-import { generateNodeId } from "@/lib/css-generator";
-import { CustomEdge, CustomNode, NodeType } from "@/lib/types";
+import { useFlowStore } from "@/lib/store";
 import {
-  addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
   Background,
   ColorMode,
-  Connection,
   Controls,
-  EdgeChange,
   MiniMap,
-  NodeChange,
   NodeTypes,
   ReactFlow,
   ReactFlowProvider
 } from "@xyflow/react";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { FlowProvider } from "./FlowContext";
 import AddNode from "./nodes/AddNode";
 import InputColorNode from "./nodes/InputColorNode";
 import InputNumberNode from "./nodes/InputNumberNode";
@@ -46,90 +38,31 @@ const nodeTypes: NodeTypes = {
   divide: MultiplyNode,
 };
 
-interface FlowEditorProps {
-  nodes: CustomNode[];
-  edges: CustomEdge[];
-  onNodesChange: (nodes: CustomNode[]) => void;
-  onEdgesChange: (edges: CustomEdge[]) => void;
-}
-
-const FlowEditor = ({
-  nodes,
-  edges,
-  onNodesChange,
-  onEdgesChange,
-}: FlowEditorProps) => {
+const FlowEditor = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  const { theme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const nodes = useFlowStore((state) => state.nodes);
+  const edges = useFlowStore((state) => state.edges);
+  const handleNodesChange = useFlowStore((state) => state.handleNodesChange);
+  const handleEdgesChange = useFlowStore((state) => state.handleEdgesChange);
+  const onConnect = useFlowStore((state) => state.onConnect);
+  const onDropFromStore = useFlowStore((state) => state.onDrop);
 
   // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  const handleNodesChange = useCallback(
-    (changes: NodeChange[]) => {
-      const updatedNodes = applyNodeChanges(changes, nodes) as CustomNode[];
-      onNodesChange(updatedNodes);
-    },
-    [nodes, onNodesChange]
-  );
-
-  const handleEdgesChange = useCallback(
-    (changes: EdgeChange[]) => {
-      const updatedEdges = applyEdgeChanges(changes, edges as any) as CustomEdge[];
-      onEdgesChange(updatedEdges);
-    },
-    [edges, onEdgesChange]
-  );
-
-  const onConnect = useCallback(
-    (params: Connection) => {
-      const newEdge = addEdge(params, edges as any) as CustomEdge[];
-      onEdgesChange(newEdge);
-    },
-    [edges, onEdgesChange]
-  );
+    setMounted(true);
+  }, []);
 
   const onDrop = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault();
-      const nodeType = event.dataTransfer.getData("application/reactflow") as NodeType;
-      if (!nodeType || !reactFlowWrapper.current) return;
-
+      if (!reactFlowWrapper.current) return;
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-      const position = {
-        x: event.clientX - reactFlowBounds.left - 100,
-        y: event.clientY - reactFlowBounds.top - 50,
-      };
-
-      const newNode: CustomNode = {
-        id: generateNodeId(),
-        type: nodeType,
-        position,
-        data:
-          nodeType === "inputColor"
-            ? { name: "", color: "oklch(0.5 0.2 180)" }
-            : nodeType === "inputNumber"
-            ? { name: "", value: 0 }
-            : nodeType === "output"
-            ? { name: "", inputNodeId: "" }
-            : nodeType === "lighten" || nodeType === "darken"
-            ? { isDarken: nodeType === "darken" }
-            : nodeType === "saturate" || nodeType === "desaturate"
-            ? { isDesaturate: nodeType === "desaturate" }
-            : nodeType === "add" || nodeType === "subtract"
-            ? { isSubtract: nodeType === "subtract" }
-            : nodeType === "multiply" || nodeType === "divide"
-            ? { isDivide: nodeType === "divide" }
-            : {},
-      };
-
-      onNodesChange([...nodes, newNode]);
+      onDropFromStore(event, reactFlowBounds);
     },
-    [nodes, onNodesChange]
+    [onDropFromStore]
   );
 
   const onDragOver = useCallback((event: React.DragEvent) => {
@@ -137,38 +70,26 @@ const FlowEditor = ({
     event.dataTransfer.dropEffect = "move";
   }, []);
 
-  const updateNodeData = useCallback(
-    (nodeId: string, newData: any) => {
-      const updatedNodes = nodes.map((node) =>
-        node.id === nodeId ? { ...node, data: { ...node.data, ...newData } } : node
-      );
-      onNodesChange(updatedNodes);
-    },
-    [nodes, onNodesChange]
-  );
-
   return (
     <ReactFlowProvider>
-      <FlowProvider updateNodeData={updateNodeData} edges={edges}>
-        <div className="w-full h-full" ref={reactFlowWrapper}>
-          <ReactFlow
-            nodes={nodes as any}
-            edges={edges as any}
-            onNodesChange={handleNodesChange}
-            onEdgesChange={handleEdgesChange}
-            onConnect={onConnect}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
-            nodeTypes={nodeTypes}
-            fitView
-            colorMode={mounted ? (theme as ColorMode) ?? "system" : undefined}
-          >
-            <Background />
-            <Controls />
-            <MiniMap />
-          </ReactFlow>
-        </div>
-      </FlowProvider>
+      <div className="w-full h-full" ref={reactFlowWrapper}>
+        <ReactFlow
+          nodes={nodes as any}
+          edges={edges as any}
+          onNodesChange={handleNodesChange}
+          onEdgesChange={handleEdgesChange}
+          onConnect={onConnect}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+          nodeTypes={nodeTypes}
+          fitView
+          colorMode={mounted ? (theme as ColorMode) ?? "system" : undefined}
+        >
+          <Background />
+          <Controls />
+          <MiniMap />
+        </ReactFlow>
+      </div>
     </ReactFlowProvider>
   );
 };

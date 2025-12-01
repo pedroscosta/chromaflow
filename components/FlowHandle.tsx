@@ -2,7 +2,7 @@
 
 import { Handle, HandleProps, useNodeId } from "@xyflow/react";
 import { useMemo } from "react";
-import { useFlowContext } from "./FlowContext";
+import { useFlowStore } from "@/lib/store";
 
 type HandleCategory = "number" | "color";
 
@@ -12,7 +12,7 @@ interface FlowHandleProps extends Omit<HandleProps, "className"> {
 }
 
 const FlowHandle = ({ category, id, type, className = "", ...props }: FlowHandleProps) => {
-  const { edges } = useFlowContext();
+  const edges = useFlowStore((state) => state.edges);
   const nodeId = useNodeId();
   
   const isConnected = useMemo(() => {

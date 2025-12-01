@@ -2,11 +2,11 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { KebabCaseInput } from "@/components/ui/kebab-case-input";
+import { useFlowStore } from "@/lib/store";
 import { OutputData } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { NodeProps, Position } from "@xyflow/react";
 import { useCallback } from "react";
-import { useFlowContext } from "../FlowContext";
 import FlowHandle from "../FlowHandle";
 
 interface OutputNodeProps extends NodeProps {
@@ -14,7 +14,7 @@ interface OutputNodeProps extends NodeProps {
 }
 
 const OutputNode = ({ data, id, selected }: OutputNodeProps) => {
-  const { updateNodeData } = useFlowContext();
+  const updateNodeData = useFlowStore((state) => state.updateNodeData);
   const name = data.name || "";
 
   const handleNameChange = useCallback(

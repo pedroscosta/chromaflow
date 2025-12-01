@@ -11,32 +11,27 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { generateCSSVariables } from "@/lib/css-generator";
-import { CustomEdge, CustomNode, NodeType } from "@/lib/types";
+import { useFlowStore } from "@/lib/store";
+import { NodeType } from "@/lib/types";
 import { Check, Copy, Download } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 
 export default function Home() {
-  const [nodes, setNodes] = useState<CustomNode[]>([]);
-  const [edges, setEdges] = useState<CustomEdge[]>([]);
-  const [isExportDialogOpen, setIsExportDialogOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const nodes = useFlowStore((state) => state.nodes);
+  const edges = useFlowStore((state) => state.edges);
+  const isExportDialogOpen = useFlowStore((state) => state.isExportDialogOpen);
+  const copied = useFlowStore((state) => state.copied);
+  const setIsExportDialogOpen = useFlowStore((state) => state.setIsExportDialogOpen);
+  const setCopied = useFlowStore((state) => state.setCopied);
 
   const handleDragStart = useCallback((event: React.DragEvent, nodeType: NodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   }, []);
 
-  const handleNodesChange = useCallback((newNodes: CustomNode[]) => {
-    setNodes(newNodes);
-  }, []);
-
-  const handleEdgesChange = useCallback((newEdges: CustomEdge[]) => {
-    setEdges(newEdges);
-  }, []);
-
   const handleExportClick = useCallback(() => {
     setIsExportDialogOpen(true);
-  }, []);
+  }, [setIsExportDialogOpen]);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(cssExport);
@@ -64,12 +59,7 @@ export default function Home() {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar onDragStart={handleDragStart} />
         <div className="flex-1">
-          <FlowEditor
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={handleNodesChange}
-            onEdgesChange={handleEdgesChange}
-          />
+          <FlowEditor />
         </div>
       </div>
       <Dialog open={isExportDialogOpen} onOpenChange={setIsExportDialogOpen}>

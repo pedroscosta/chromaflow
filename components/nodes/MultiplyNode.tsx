@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { NodeProps, Position } from "@xyflow/react";
 import { ArrowDownUp } from "lucide-react";
 import { useCallback, useMemo } from "react";
-import { useFlowContext } from "../FlowContext";
+import { useFlowStore } from "@/lib/store";
 import FlowHandle from "../FlowHandle";
 
 interface MultiplyNodeProps extends NodeProps {
@@ -20,7 +20,7 @@ interface MultiplyNodeProps extends NodeProps {
 }
 
 const MultiplyNode = ({ id, selected, type, data }: MultiplyNodeProps) => {
-  const { updateNodeData } = useFlowContext();
+  const updateNodeData = useFlowStore((state) => state.updateNodeData);
   
   // Initialize mode based on node type or existing data
   const isDivide = useMemo(() => {
