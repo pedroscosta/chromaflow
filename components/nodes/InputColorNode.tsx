@@ -2,6 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { KebabCaseInput } from "@/components/ui/kebab-case-input";
 import { Label } from "@/components/ui/label";
 import { InputColorData } from "@/lib/types";
 import Color from "colorjs.io";
@@ -27,18 +28,11 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
     [id, updateNodeData]
   );
 
-  const convertToKebabCase = useCallback((value: string) => {
-    return value
-      .toLowerCase()
-      .replace(/[ _]+/g, "-")
-  }, []);
-
   const handleNameChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const kebabCaseValue = convertToKebabCase(e.target.value);
-      updateNodeData(id, { name: kebabCaseValue });
+      updateNodeData(id, { name: e.target.value });
     },
-    [id, updateNodeData, convertToKebabCase]
+    [id, updateNodeData]
   );
 
   // Convert OKLCH to hex for color input
@@ -72,7 +66,7 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
           <div className="text-xs font-semibold">
             Color input
           </div>
-          <Input
+          <KebabCaseInput
             id={`name-${id}`}
             value={name}
             onChange={handleNameChange}

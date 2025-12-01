@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { KebabCaseInput } from "@/components/ui/kebab-case-input";
 import { OutputData } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useCallback } from "react";
@@ -30,7 +30,7 @@ const OutputNode = ({ data, id, selected }: OutputNodeProps) => {
         <div className="space-y-2">
           <div className="text-xs font-semibold">Output</div>
           <div className="relative">
-          <Input
+          <KebabCaseInput
             id={`name-${id}`}
             value={name}
             onChange={handleNameChange}

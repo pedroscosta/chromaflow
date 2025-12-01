@@ -2,6 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { KebabCaseInput } from "@/components/ui/kebab-case-input";
 import { Label } from "@/components/ui/label";
 import { InputNumberData } from "@/lib/types";
 import { useCallback } from "react";
@@ -40,7 +41,7 @@ const InputNumberNode = ({ data, id, selected }: InputNumberNodeProps) => {
           <div className="text-xs font-semibold">
             Number input
           </div>
-          <Input
+          <KebabCaseInput
             id={`name-${id}`}
             value={name}
             onChange={handleNameChange}
