@@ -31,55 +31,55 @@ const Sidebar = ({ onDragStart }: SidebarProps) => {
     {
       type: "inputColor",
       label: "Color Input",
-      icon: <Palette className="w-4 h-4" />,
+      icon: <Palette className="w-3.5 h-3.5" />,
       category: "Inputs",
     },
     {
       type: "inputNumber",
       label: "Number Input",
-      icon: <Hash className="w-4 h-4" />,
+      icon: <Hash className="w-3.5 h-3.5" />,
       category: "Inputs",
     },
     {
       type: "lighten",
       label: "Lighten",
-      icon: <Sun className="w-4 h-4" />,
+      icon: <Sun className="w-3.5 h-3.5" />,
       category: "Color Operations",
     },
     {
       type: "saturate",
       label: "Saturate",
-      icon: <Droplet className="w-4 h-4" />,
+      icon: <Droplet className="w-3.5 h-3.5" />,
       category: "Color Operations",
     },
     {
       type: "rotate",
       label: "Rotate",
-      icon: <RotateCw className="w-4 h-4" />,
+      icon: <RotateCw className="w-3.5 h-3.5" />,
       category: "Color Operations",
     },
     {
       type: "mix",
       label: "Mix",
-      icon: <Blend className="w-4 h-4" />,
+      icon: <Blend className="w-3.5 h-3.5" />,
       category: "Color Operations",
     },
     {
       type: "add",
       label: "Add",
-      icon: <Plus className="w-4 h-4" />,
+      icon: <Plus className="w-3.5 h-3.5" />,
       category: "Number Operations",
     },
     {
       type: "multiply",
       label: "Multiply",
-      icon: <X className="w-4 h-4" />,
+      icon: <X className="w-3.5 h-3.5" />,
       category: "Number Operations",
     },
     {
       type: "output",
       label: "Output",
-      icon: <Download className="w-4 h-4" />,
+      icon: <Download className="w-3.5 h-3.5" />,
       category: "Output",
     },
   ];
@@ -94,8 +94,8 @@ const Sidebar = ({ onDragStart }: SidebarProps) => {
   }, {} as Record<string, typeof nodeTypes>);
 
   return (
-    <div className="w-64 h-full bg-card border-r border-border p-4 space-y-4 overflow-y-auto shrink-0">
-      <h2 className="text-sm font-semibold mb-4">Nodes</h2>
+    <div className="w-48 h-full bg-card border-r border-border p-3 space-y-3 overflow-y-auto shrink-0">
+      {/* <h2 className="text-xs font-semibold mb-2">Nodes</h2> */}
       {Object.entries(groupedNodes).map(([category, nodes]) => (
         <div key={category} className="space-y-2">
           <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
@@ -106,11 +106,11 @@ const Sidebar = ({ onDragStart }: SidebarProps) => {
               key={type}
               draggable
               onDragStart={(e) => handleDragStart(e, type)}
-              className="cursor-grab active:cursor-grabbing hover:bg-accent transition-colors"
+              className="cursor-grab active:cursor-grabbing hover:bg-accent transition-colors p-0"
             >
-              <CardContent className="p-3 flex items-center gap-2">
+              <CardContent className="p-2 flex items-center gap-1.5">
                 {icon}
-                <span className="text-sm">{label}</span>
+                <span className="text-xs">{label}</span>
               </CardContent>
             </Card>
           ))}
