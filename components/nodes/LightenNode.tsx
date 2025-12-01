@@ -1,7 +1,8 @@
 "use client";
 
-import { Position, NodeProps } from "reactflow";
 import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { NodeProps, Position } from "reactflow";
 import FlowHandle from "../FlowHandle";
 
 interface LightenNodeProps extends NodeProps {
@@ -10,39 +11,45 @@ interface LightenNodeProps extends NodeProps {
 
 const LightenNode = ({ id, selected }: LightenNodeProps) => {
   return (
-    <Card className={`min-w-[200px] ${selected ? "ring-2 ring-primary" : ""}`}>
-      <CardContent className="p-4 space-y-3">
-        <div className="space-y-2">
+    <Card className={cn("min-w-[200px] p-0", selected && "ring-2 ring-primary")}>
+      <CardContent className="p-0 pt-4 flex flex-col gap-3">
+        <div className="space-y-2 px-4">
           <div className="text-sm font-semibold">Lighten</div>
-          <div className="text-xs text-muted-foreground">
-            Lighten color by amount
-          </div>
         </div>
-        <div className="space-y-2 relative min-h-[100px]">
-          <div className="relative" style={{ height: "60px" }}>
+        <div className="grid grid-cols-2 border-t">
+          <div className="space-y-2 border-r py-2 px-4">
+          <div className="relative">
             <FlowHandle
               type="target"
               position={Position.Left}
               id="input-0"
               category="color"
-              className="w-5 h-5"
-              style={{ top: "20px" }}
             />
-            <span className="absolute left-8 top-4 text-xs text-muted-foreground">Color</span>
+            Color
           </div>
-          <div className="relative" style={{ height: "60px" }}>
+          <div className="relative">
             <FlowHandle
               type="target"
               position={Position.Left}
               id="input-1"
               category="number"
-              className="w-5 h-5"
-              style={{ top: "20px" }}
             />
-            <span className="absolute left-8 top-4 text-xs text-muted-foreground">Amount</span>
+            Amount
+          </div>
+          </div>
+          <div className="space-y-2 bg-background/50 relative px-4 py-2">
+          <div className="relative">
+          <FlowHandle
+              type="source"
+              position={Position.Right}
+              category="color"
+            />
+            Output
+          </div>
+            
           </div>
         </div>
-        <FlowHandle type="source" position={Position.Right} category="color" />
+
       </CardContent>
     </Card>
   );
