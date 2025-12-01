@@ -122,6 +122,9 @@
 }
 
 .react-flow {
+  .react-flow__node-output {
+    @apply bg-transparent! border-none!;
+  }
   .react-flow__handle {
     --handle-color: var(--primary);
     @apply size-2 bg-transparent ring-2 ring-offset-background ring-offset-2 ring-(--handle-color) border-none!;
