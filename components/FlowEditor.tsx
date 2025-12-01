@@ -18,8 +18,6 @@ import ReactFlow, {
 } from "reactflow";
 import { FlowProvider } from "./FlowContext";
 import AddNode from "./nodes/AddNode";
-import DesaturateNode from "./nodes/DesaturateNode";
-import DivideNode from "./nodes/DivideNode";
 import InputColorNode from "./nodes/InputColorNode";
 import InputNumberNode from "./nodes/InputNumberNode";
 import LightenNode from "./nodes/LightenNode";
@@ -28,7 +26,6 @@ import MultiplyNode from "./nodes/MultiplyNode";
 import OutputNode from "./nodes/OutputNode";
 import RotateNode from "./nodes/RotateNode";
 import SaturateNode from "./nodes/SaturateNode";
-import SubtractNode from "./nodes/SubtractNode";
 
 const nodeTypes: NodeTypes = {
   inputColor: InputColorNode,
@@ -37,13 +34,13 @@ const nodeTypes: NodeTypes = {
   lighten: LightenNode,
   darken: LightenNode,
   saturate: SaturateNode,
-  desaturate: DesaturateNode,
+  desaturate: SaturateNode,
   rotate: RotateNode,
   mix: MixNode,
   add: AddNode,
-  subtract: SubtractNode,
+  subtract: AddNode,
   multiply: MultiplyNode,
-  divide: DivideNode,
+  divide: MultiplyNode,
 };
 
 interface FlowEditorProps {
@@ -110,6 +107,12 @@ const FlowEditor = ({
             ? { name: "", inputNodeId: "" }
             : nodeType === "lighten" || nodeType === "darken"
             ? { isDarken: nodeType === "darken" }
+            : nodeType === "saturate" || nodeType === "desaturate"
+            ? { isDesaturate: nodeType === "desaturate" }
+            : nodeType === "add" || nodeType === "subtract"
+            ? { isSubtract: nodeType === "subtract" }
+            : nodeType === "multiply" || nodeType === "divide"
+            ? { isDivide: nodeType === "divide" }
             : {},
       };
 
