@@ -1,12 +1,13 @@
 "use client";
 
 import { useCallback } from "react";
-import { Handle, Position, NodeProps } from "reactflow";
+import { Position, NodeProps } from "reactflow";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { OutputData } from "@/lib/types";
 import { useFlowContext } from "../FlowContext";
+import FlowHandle from "../FlowHandle";
 
 interface OutputNodeProps extends NodeProps {
   data: OutputData;
@@ -41,7 +42,7 @@ const OutputNode = ({ data, id, selected }: OutputNodeProps) => {
         <div className="text-xs text-muted-foreground">
           Outputs the connected value as a CSS variable
         </div>
-        <Handle type="target" position={Position.Left} className="w-5 h-5 !bg-primary" />
+        <FlowHandle type="target" position={Position.Left} category="color" className="w-5 h-5" />
       </CardContent>
     </Card>
   );

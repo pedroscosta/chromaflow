@@ -163,7 +163,7 @@ const FlowEditor = ({
 
   return (
     <ReactFlowProvider>
-      <FlowProvider updateNodeData={updateNodeData}>
+      <FlowProvider updateNodeData={updateNodeData} edges={edges}>
         <div className="w-full h-full flex flex-col">
           <nav className="w-full border-b bg-background px-4 py-3 flex items-center justify-between">
             <h1 className="text-lg font-semibold">Parametric Palette</h1>

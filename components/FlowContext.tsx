@@ -1,10 +1,11 @@
 "use client";
 
 import { createContext, useContext, ReactNode } from "react";
-import { CustomNode } from "@/lib/types";
+import { CustomEdge, CustomNode } from "@/lib/types";
 
 interface FlowContextType {
   updateNodeData: (nodeId: string, newData: any) => void;
+  edges: CustomEdge[];
 }
 
 const FlowContext = createContext<FlowContextType | null>(null);
@@ -20,11 +21,12 @@ export const useFlowContext = () => {
 interface FlowProviderProps {
   children: ReactNode;
   updateNodeData: (nodeId: string, newData: any) => void;
+  edges: CustomEdge[];
 }
 
-export const FlowProvider = ({ children, updateNodeData }: FlowProviderProps) => {
+export const FlowProvider = ({ children, updateNodeData, edges }: FlowProviderProps) => {
   return (
-    <FlowContext.Provider value={{ updateNodeData }}>
+    <FlowContext.Provider value={{ updateNodeData, edges }}>
       {children}
     </FlowContext.Provider>
   );

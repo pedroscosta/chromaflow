@@ -123,7 +123,8 @@
 
 .react-flow {
   .react-flow__handle {
-    @apply size-3 bg-transparent ring ring-offset-background ring-offset-2 border-none! translate-x-1/2;
+    --handle-color: var(--primary);
+    @apply size-2 bg-transparent ring-2 ring-offset-background ring-offset-2 ring-(--handle-color) border-none! translate-x-1/2;
   }
 
   .react-flow__handle-right {
@@ -140,5 +141,9 @@
 
   .react-flow__handle-bottom {
     @apply bottom-0;
+  }
+
+  .react-flow__handle-connected {
+    @apply bg-(--handle-color);
   }
 }

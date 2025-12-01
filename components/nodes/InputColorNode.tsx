@@ -6,8 +6,9 @@ import { Label } from "@/components/ui/label";
 import { InputColorData } from "@/lib/types";
 import Color from "colorjs.io";
 import { useCallback } from "react";
-import { Handle, NodeProps, Position } from "reactflow";
+import { NodeProps, Position } from "reactflow";
 import { useFlowContext } from "../FlowContext";
+import FlowHandle from "../FlowHandle";
 
 interface InputColorNodeProps extends NodeProps {
   data: InputColorData;
@@ -66,8 +67,8 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
 
   return (
     <Card className={`min-w-[200px] p-0 ${selected ? "ring-2 ring-primary" : ""}`}>
-      <CardContent className="py-4 px-0 space-y-3">
-        <div className="space-y-2 px-4">
+      <CardContent className="py-4 px-4 space-y-3">
+        <div className="space-y-2">
           <div className="text-xs font-semibold">
             Color input
           </div>
@@ -79,7 +80,7 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
             className="h-8 text-sm"
           />
         </div>
-        <div className="space-y-2 px-4">
+        <div className="space-y-2">
           <Label htmlFor={`color-${id}`} className="text-xs font-semibold">
             Color
           </Label>
@@ -97,7 +98,7 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
               placeholder="oklch(0.5 0.2 180)"
               className="h-8 text-xs font-mono flex-1"
             />
-            <Handle type="source" position={Position.Right} />
+            <FlowHandle type="source" position={Position.Right} category="color" />
           </div>
         </div>
       </CardContent>
