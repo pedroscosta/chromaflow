@@ -1,6 +1,6 @@
 <div align="center">
 
-# Parametric Palette Editor
+# Chromaflow
 
 **A visual flow editor for creating parametric color palettes and generating CSS variables**
 
@@ -30,8 +30,8 @@
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/pedroscosta/parametric-palette.git
-cd parametric-palette
+git clone https://github.com/pedroscosta/chromaflow.git
+cd chromaflow
 ```
 
 2. Install dependencies:

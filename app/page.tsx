@@ -112,7 +112,7 @@ export default function Home() {
     <div className="flex flex-col h-screen w-full bg-background">
       <nav className="w-full border-b bg-sidebar px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-6">
-          <h1 className="text-lg font-semibold">Parametric Palette Editor</h1>
+          <h1 className="text-lg font-semibold">Chromaflow</h1>
           <span
             className="text-sm text-muted-foreground"
             aria-label="Made with love by @pedroscosta on Twitter"
@@ -120,7 +120,7 @@ export default function Home() {
             Made with <Heart className="inline-block size-4 -mt-0.5" /> by{" "}
             <Link href="https://x.com/pedroscosta_" target="_blank" className="font-medium underline hover:text-primary transition-colors">@pedroscosta</Link>
           </span>
-          <Link href="https://github.com/pedroscosta/parametric-palette" target="_blank" className="text-sm text-muted-foreground underline hover:text-primary transition-colors">GitHub</Link>
+          <Link href="https://github.com/pedroscosta/chromaflow" target="_blank" className="text-sm text-muted-foreground underline hover:text-primary transition-colors">GitHub</Link>
         </div>
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-0 border rounded-md overflow-hidden">
