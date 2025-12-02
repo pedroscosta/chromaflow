@@ -8,7 +8,8 @@ import { useFlowStore } from "@/lib/store";
 import { InputColorData } from "@/lib/types";
 import { NodeProps, Position } from "@xyflow/react";
 import Color from "colorjs.io";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import FlowHandle from "../FlowHandle";
 import { Button } from "../ui/button";
 import { ColorPicker } from "../ui/color-picker";
@@ -22,13 +23,27 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
   const updateNodeData = useFlowStore((state) => state.updateNodeData);
   const color = data.color || "oklch(0.5 0.2 180)";
   const name = data.name || "";
+  const [localColor, setLocalColor] = useState(color);
+
+  const debouncedUpdateColor = useDebouncedCallback(
+    (newColor: string) => {
+      updateNodeData(id, { color: newColor });
+    },
+    300
+  );
+
+  // Sync local color when prop changes externally
+  useEffect(() => {
+    setLocalColor(color);
+  }, [color]);
 
   const handleColorChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const newColor = e.target.value;
-      updateNodeData(id, { color: newColor });
+      setLocalColor(newColor);
+      debouncedUpdateColor(newColor);
     },
-    [id, updateNodeData]
+    [debouncedUpdateColor]
   );
 
   const handleNameChange = useCallback(
@@ -41,12 +56,12 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
   // Convert OKLCH to hex for color input
   const getHexColor = useCallback(() => {
     try {
-      const c = new Color(color);
+      const c = new Color(localColor);
       return c.to("srgb").toString({ format: "hex" });
     } catch {
       return "#808080";
     }
-  }, [color]);
+  }, [localColor]);
 
   return (
     <Card className={`min-w-[200px] p-0 ${selected ? "ring-2 ring-primary" : ""}`}>
@@ -73,11 +88,17 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
                 <Button variant="outline" size="icon" className="size-8" style={{ background: getHexColor() }} />
               </PopoverTrigger>
               <PopoverContent className="w-auto">
-                <ColorPicker onChange={(newColor) => updateNodeData(id, { color: newColor })} value={color} />
+                <ColorPicker 
+                  onChange={(newColor) => {
+                    setLocalColor(newColor);
+                    updateNodeData(id, { color: newColor });
+                  }} 
+                  value={localColor} 
+                />
               </PopoverContent>
             </Popover>
             <Input
-              value={color}
+              value={localColor}
               onChange={handleColorChange}
               placeholder="oklch(0.5 0.2 180)"
               className="h-8 text-xs font-mono flex-1"
