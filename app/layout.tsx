@@ -1,6 +1,6 @@
-import { ThemeProvider } from "@/components/ThemeProvider";
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const geistMono = Geist_Mono({
@@ -10,7 +10,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "chromaflow",
-  description: "A visual flow editor for creating parametric color palettes and generating CSS variables",
+  description:
+    "A visual flow editor for creating parametric color palettes and generating CSS variables",
 };
 
 export default function RootLayout({
@@ -20,14 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistMono.variable} font-mono antialiased`}
-      >
+      <body className={`${geistMono.variable} font-mono antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
-          enableSystem
           disableTransitionOnChange
+          enableSystem
         >
           {children}
         </ThemeProvider>

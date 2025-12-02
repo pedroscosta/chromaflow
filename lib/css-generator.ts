@@ -1,12 +1,12 @@
-import Color from "colorjs.io";
-import { CustomNode, CustomEdge, NodeType, OperationType } from "./types";
+import type { CustomEdge, CustomNode, OperationType } from "./types";
 
 export interface CSSVariable {
   name: string;
   value: string;
 }
 
-const generateNodeId = () => `node_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+const generateNodeId = () =>
+  `node_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
 export const generateCSSVariables = (
   nodes: CustomNode[],
@@ -46,7 +46,12 @@ export const generateCSSVariables = (
         if (inputEdge) {
           const inputNode = nodeMap.get(inputEdge.source);
           if (inputNode) {
-            const expression = generateExpression(inputNode, nodes, edges, nodeMap);
+            const expression = generateExpression(
+              inputNode,
+              nodes,
+              edges,
+              nodeMap
+            );
             variables.push({
               name: `--${outputData.name}`,
               value: expression,
@@ -68,7 +73,9 @@ const generateExpression = (
 ): string => {
   if (node.type === "inputColor") {
     const data = node.data as { name: string; color: string };
-    return data.name ? `var(--${data.name})` : data.color || "oklch(0.5 0.2 180)";
+    return data.name
+      ? `var(--${data.name})`
+      : data.color || "oklch(0.5 0.2 180)";
   }
 
   if (node.type === "inputNumber") {
@@ -96,7 +103,7 @@ const generateExpression = (
     // For lighten/darken nodes, check the isDarken flag in data
     if (node.type === "lighten" || node.type === "darken") {
       const nodeData = node.data as { isDarken?: boolean };
-      const isDarken = nodeData.isDarken ?? (node.type === "darken");
+      const isDarken = nodeData.isDarken ?? node.type === "darken";
       operation = isDarken ? "darken" : "lighten";
     }
 
@@ -108,7 +115,7 @@ const generateExpression = (
         const bHandle = b.targetHandle || "";
         return aHandle.localeCompare(bHandle);
       });
-    
+
     const inputs = inputEdges.map((edge) => {
       const inputNode = nodeMap.get(edge.source);
       if (!inputNode) return "";
@@ -128,13 +135,19 @@ const generateOperationExpression = (
   if (inputs.length === 0) return "";
 
   // Color operations that need a color input and optionally an amount
-  const needsAmount = ["lighten", "darken", "saturate", "desaturate", "rotate"].includes(operation);
-  
+  const needsAmount = [
+    "lighten",
+    "darken",
+    "saturate",
+    "desaturate",
+    "rotate",
+  ].includes(operation);
+
   if (needsAmount) {
     // First input is color, second is amount (if provided)
     const colorInput = inputs[0] || "oklch(0.5 0.2 180)";
     const amountInput = inputs[1] || (operation === "rotate" ? "30" : "0.1");
-    
+
     switch (operation) {
       case "lighten":
         return `oklch(from ${colorInput} calc(l + ${amountInput}) c h)`;
@@ -169,4 +182,3 @@ const generateOperationExpression = (
 };
 
 export { generateNodeId };
-

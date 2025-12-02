@@ -1,17 +1,17 @@
 "use client";
 
-import { useFlowStore } from "@/lib/store";
 import {
   Background,
-  ColorMode,
+  type ColorMode,
   Controls,
   MiniMap,
-  NodeTypes,
+  type NodeTypes,
   ReactFlow,
-  ReactFlowProvider
+  ReactFlowProvider,
 } from "@xyflow/react";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useFlowStore } from "@/lib/store";
 import AddNode from "./nodes/AddNode";
 import InputColorNode from "./nodes/InputColorNode";
 import InputNumberNode from "./nodes/InputNumberNode";
@@ -72,18 +72,18 @@ const FlowEditor = () => {
 
   return (
     <ReactFlowProvider>
-      <div className="w-full h-full" ref={reactFlowWrapper}>
+      <div className="h-full w-full" ref={reactFlowWrapper}>
         <ReactFlow
-          nodes={nodes as any}
+          colorMode={mounted ? ((theme as ColorMode) ?? "system") : undefined}
           edges={edges as any}
-          onNodesChange={handleNodesChange}
-          onEdgesChange={handleEdgesChange}
-          onConnect={onConnect}
-          onDrop={onDrop}
-          onDragOver={onDragOver}
-          nodeTypes={nodeTypes}
           fitView
-          colorMode={mounted ? (theme as ColorMode) ?? "system" : undefined}
+          nodes={nodes as any}
+          nodeTypes={nodeTypes}
+          onConnect={onConnect}
+          onDragOver={onDragOver}
+          onDrop={onDrop}
+          onEdgesChange={handleEdgesChange}
+          onNodesChange={handleNodesChange}
         >
           <Background />
           <Controls />
@@ -95,4 +95,3 @@ const FlowEditor = () => {
 };
 
 export default FlowEditor;
-

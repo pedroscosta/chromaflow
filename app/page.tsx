@@ -1,5 +1,8 @@
 "use client";
 
+import { Check, Code2, Copy, Download, Heart, Upload } from "lucide-react";
+import Link from "next/link";
+import { useCallback, useMemo, useRef } from "react";
 import FlowEditor from "@/components/FlowEditor";
 import Sidebar from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
@@ -12,10 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { generateCSSVariables } from "@/lib/css-generator";
 import { useFlowStore } from "@/lib/store";
-import { CustomEdge, CustomNode, NodeType } from "@/lib/types";
-import { Check, Code2, Copy, Download, Heart, Upload } from "lucide-react";
-import Link from "next/link";
-import { useCallback, useMemo, useRef } from "react";
+import type { CustomEdge, CustomNode, NodeType } from "@/lib/types";
 
 export default function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -23,14 +23,19 @@ export default function Home() {
   const edges = useFlowStore((state) => state.edges);
   const isExportDialogOpen = useFlowStore((state) => state.isExportDialogOpen);
   const copied = useFlowStore((state) => state.copied);
-  const setIsExportDialogOpen = useFlowStore((state) => state.setIsExportDialogOpen);
+  const setIsExportDialogOpen = useFlowStore(
+    (state) => state.setIsExportDialogOpen
+  );
   const setCopied = useFlowStore((state) => state.setCopied);
   const importState = useFlowStore((state) => state.importState);
 
-  const handleDragStart = useCallback((event: React.DragEvent, nodeType: NodeType) => {
-    event.dataTransfer.setData("application/reactflow", nodeType);
-    event.dataTransfer.effectAllowed = "move";
-  }, []);
+  const handleDragStart = useCallback(
+    (event: React.DragEvent, nodeType: NodeType) => {
+      event.dataTransfer.setData("application/reactflow", nodeType);
+      event.dataTransfer.effectAllowed = "move";
+    },
+    []
+  );
 
   const handleExportClick = useCallback(() => {
     setIsExportDialogOpen(true);
@@ -83,7 +88,9 @@ export default function Home() {
           if (data.nodes && data.edges) {
             importState(data.nodes, data.edges);
           } else {
-            alert("Invalid file format. The file must contain nodes and edges.");
+            alert(
+              "Invalid file format. The file must contain nodes and edges."
+            );
           }
         } catch (error) {
           alert("Failed to parse JSON file. Please check the file format.");
@@ -109,50 +116,62 @@ export default function Home() {
   }, [cssVariables]);
 
   return (
-    <div className="flex flex-col h-screen w-full bg-background">
-      <nav className="w-full border-b bg-sidebar px-4 py-3 flex items-center justify-between">
+    <div className="flex h-screen w-full flex-col bg-background">
+      <nav className="flex w-full items-center justify-between border-b bg-sidebar px-4 py-3">
         <div className="flex items-center gap-6">
-          <h1 className="text-lg font-semibold">chromaflow</h1>
+          <h1 className="font-semibold text-lg">chromaflow</h1>
           <span
-            className="text-sm text-muted-foreground"
             aria-label="made with love by @pedroscosta on Twitter"
+            className="text-muted-foreground text-sm"
           >
-            made with <Heart className="inline-block size-4 -mt-0.5" /> by{" "}
-            <Link href="https://x.com/pedroscosta_" target="_blank" className="font-medium underline hover:text-primary transition-colors">@pedroscosta</Link>
+            made with <Heart className="-mt-0.5 inline-block size-4" /> by{" "}
+            <Link
+              className="font-medium underline transition-colors hover:text-primary"
+              href="https://x.com/pedroscosta_"
+              target="_blank"
+            >
+              @pedroscosta
+            </Link>
           </span>
-          <Link href="https://github.com/pedroscosta/chromaflow" target="_blank" className="text-sm text-muted-foreground underline hover:text-primary transition-colors">GitHub</Link>
+          <Link
+            className="text-muted-foreground text-sm underline transition-colors hover:text-primary"
+            href="https://github.com/pedroscosta/chromaflow"
+            target="_blank"
+          >
+            GitHub
+          </Link>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-0 border rounded-md overflow-hidden">
+          <div className="flex items-center gap-0 overflow-hidden rounded-md border">
             <Button
-              onClick={handleExportJSON}
-              variant="outline"
-              size="default"
               className="rounded-r-none"
+              onClick={handleExportJSON}
+              size="default"
+              variant="outline"
             >
               <Download className="size-4" />
               Export
             </Button>
             <Button
-              onClick={handleImportJSON}
-              variant="outline"
-              size="default"
               className="rounded-l-none border-l-0"
+              onClick={handleImportJSON}
+              size="default"
+              variant="outline"
             >
               <Upload className="size-4" />
             </Button>
           </div>
-          <Button onClick={handleExportClick} variant="default" size="default">
+          <Button onClick={handleExportClick} size="default" variant="default">
             <Code2 className="size-4" />
             Export CSS
           </Button>
           <input
+            accept=".json,application/json"
+            aria-label="Import JSON file"
+            className="hidden"
+            onChange={handleFileChange}
             ref={fileInputRef}
             type="file"
-            accept=".json,application/json"
-            onChange={handleFileChange}
-            className="hidden"
-            aria-label="Import JSON file"
           />
         </div>
       </nav>
@@ -162,7 +181,7 @@ export default function Home() {
           <FlowEditor />
         </div>
       </div>
-      <Dialog open={isExportDialogOpen} onOpenChange={setIsExportDialogOpen}>
+      <Dialog onOpenChange={setIsExportDialogOpen} open={isExportDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Export CSS Variables</DialogTitle>
@@ -173,29 +192,25 @@ export default function Home() {
           <div className="space-y-4">
             <div className="relative">
               <textarea
-                readOnly
-                value={cssExport}
-                className="w-full h-64 p-4 bg-muted rounded-md border font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring"
+                className="h-64 w-full resize-none rounded-md border bg-muted p-4 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 onClick={(e) => {
                   const target = e.target as HTMLTextAreaElement;
                   target.select();
                 }}
+                readOnly
+                value={cssExport}
               />
             </div>
             <div className="flex justify-end gap-2">
-              <Button
-                size="sm"
-                onClick={handleCopy}
-                className="h-8"
-              >
+              <Button className="h-8" onClick={handleCopy} size="sm">
                 {copied ? (
                   <>
-                    <Check className="w-3 h-3 mr-1" />
+                    <Check className="mr-1 h-3 w-3" />
                     Copied
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3 h-3 mr-1" />
+                    <Copy className="mr-1 h-3 w-3" />
                     Copy
                   </>
                 )}

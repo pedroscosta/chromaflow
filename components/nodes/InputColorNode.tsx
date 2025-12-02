@@ -1,15 +1,15 @@
 "use client";
 
+import { type NodeProps, Position } from "@xyflow/react";
+import Color from "colorjs.io";
+import { useCallback, useEffect, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { KebabCaseInput } from "@/components/ui/kebab-case-input";
 import { Label } from "@/components/ui/label";
 import { useFlowStore } from "@/lib/store";
-import { InputColorData } from "@/lib/types";
-import { NodeProps, Position } from "@xyflow/react";
-import Color from "colorjs.io";
-import { useCallback, useEffect, useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
+import type { InputColorData } from "@/lib/types";
 import FlowHandle from "../FlowHandle";
 import { Button } from "../ui/button";
 import { ColorPicker } from "../ui/color-picker";
@@ -25,12 +25,9 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
   const name = data.name || "";
   const [localColor, setLocalColor] = useState(color);
 
-  const debouncedUpdateColor = useDebouncedCallback(
-    (newColor: string) => {
-      updateNodeData(id, { color: newColor });
-    },
-    300
-  );
+  const debouncedUpdateColor = useDebouncedCallback((newColor: string) => {
+    updateNodeData(id, { color: newColor });
+  }, 300);
 
   // Sync local color when prop changes externally
   useEffect(() => {
@@ -64,46 +61,55 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
   }, [localColor]);
 
   return (
-    <Card className={`min-w-[200px] p-0 ${selected ? "ring-2 ring-primary" : ""}`}>
-      <CardContent className="py-4 px-4 space-y-3">
+    <Card
+      className={`min-w-[200px] p-0 ${selected ? "ring-2 ring-primary" : ""}`}
+    >
+      <CardContent className="space-y-3 px-4 py-4">
         <div className="space-y-2">
-          <div className="text-xs font-semibold">
-            Color input
-          </div>
+          <div className="font-semibold text-xs">Color input</div>
           <KebabCaseInput
+            className="h-8 text-sm"
             id={`name-${id}`}
-            value={name}
             onChange={handleNameChange}
             placeholder="color-name"
-            className="h-8 text-sm"
+            value={name}
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor={`color-${id}`} className="text-xs font-semibold">
+          <Label className="font-semibold text-xs" htmlFor={`color-${id}`}>
             Color
           </Label>
           <div className="relative flex gap-2">
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" size="icon" className="size-8" style={{ background: getHexColor() }} />
+                <Button
+                  className="size-8"
+                  size="icon"
+                  style={{ background: getHexColor() }}
+                  variant="outline"
+                />
               </PopoverTrigger>
               <PopoverContent className="w-auto">
-                <ColorPicker 
+                <ColorPicker
                   onChange={(newColor) => {
                     setLocalColor(newColor);
                     updateNodeData(id, { color: newColor });
-                  }} 
-                  value={localColor} 
+                  }}
+                  value={localColor}
                 />
               </PopoverContent>
             </Popover>
             <Input
-              value={localColor}
+              className="h-8 flex-1 font-mono text-xs"
               onChange={handleColorChange}
               placeholder="oklch(0.5 0.2 180)"
-              className="h-8 text-xs font-mono flex-1"
+              value={localColor}
             />
-            <FlowHandle type="source" position={Position.Right} category="color" />
+            <FlowHandle
+              category="color"
+              position={Position.Right}
+              type="source"
+            />
           </div>
         </div>
       </CardContent>
@@ -112,4 +118,3 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
 };
 
 export default InputColorNode;
-

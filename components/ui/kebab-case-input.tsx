@@ -5,11 +5,8 @@ import { Input } from "./input";
 
 interface KebabCaseInputProps extends React.ComponentProps<"input"> {}
 
-const convertToKebabCase = (value: string): string => {
-  return value
-    .toLowerCase()
-    .replace(/[ _]+/g, "-");
-};
+const convertToKebabCase = (value: string): string =>
+  value.toLowerCase().replace(/[ _]+/g, "-");
 
 const KebabCaseInput = React.forwardRef<HTMLInputElement, KebabCaseInputProps>(
   ({ onChange, value, ...props }, ref) => {
@@ -30,13 +27,14 @@ const KebabCaseInput = React.forwardRef<HTMLInputElement, KebabCaseInputProps>(
     );
 
     // Ensure the displayed value is always in kebab case
-    const kebabCaseValue = typeof value === "string" ? convertToKebabCase(value) : value;
+    const kebabCaseValue =
+      typeof value === "string" ? convertToKebabCase(value) : value;
 
     return (
       <Input
+        onChange={handleChange}
         ref={ref}
         value={kebabCaseValue}
-        onChange={handleChange}
         {...props}
       />
     );
@@ -46,4 +44,3 @@ const KebabCaseInput = React.forwardRef<HTMLInputElement, KebabCaseInputProps>(
 KebabCaseInput.displayName = "KebabCaseInput";
 
 export { KebabCaseInput };
-

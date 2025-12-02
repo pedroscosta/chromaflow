@@ -1,13 +1,13 @@
 "use client";
 
+import { type NodeProps, Position } from "@xyflow/react";
+import { useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { KebabCaseInput } from "@/components/ui/kebab-case-input";
 import { Label } from "@/components/ui/label";
-import { InputNumberData } from "@/lib/types";
-import { NodeProps, Position } from "@xyflow/react";
-import { useCallback } from "react";
 import { useFlowStore } from "@/lib/store";
+import type { InputNumberData } from "@/lib/types";
 import FlowHandle from "../FlowHandle";
 
 interface InputNumberNodeProps extends NodeProps {
@@ -21,7 +21,7 @@ const InputNumberNode = ({ data, id, selected }: InputNumberNodeProps) => {
 
   const handleValueChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const numValue = parseFloat(e.target.value) || 0;
+      const numValue = Number.parseFloat(e.target.value) || 0;
       updateNodeData(id, { value: numValue });
     },
     [id, updateNodeData]
@@ -35,35 +35,39 @@ const InputNumberNode = ({ data, id, selected }: InputNumberNodeProps) => {
   );
 
   return (
-    <Card className={`min-w-[200px] p-0 ${selected ? "ring-2 ring-primary" : ""}`}>
-      <CardContent className="py-4 px-0 space-y-3">
+    <Card
+      className={`min-w-[200px] p-0 ${selected ? "ring-2 ring-primary" : ""}`}
+    >
+      <CardContent className="space-y-3 px-0 py-4">
         <div className="space-y-2 px-4">
-          <div className="text-xs font-semibold">
-            Number input
-          </div>
+          <div className="font-semibold text-xs">Number input</div>
           <KebabCaseInput
+            className="h-8 text-sm"
             id={`name-${id}`}
-            value={name}
             onChange={handleNameChange}
             placeholder="number-name"
-            className="h-8 text-sm"
+            value={name}
           />
         </div>
         <div className="space-y-2 px-4">
-            <Label htmlFor={`value-${id}`} className="text-xs font-semibold">
-              Value
-            </Label>
+          <Label className="font-semibold text-xs" htmlFor={`value-${id}`}>
+            Value
+          </Label>
           <div className="relative">
             <Input
+              className="h-8 text-sm"
               id={`value-${id}`}
-              type="number"
-              value={value}
               onChange={handleValueChange}
               placeholder="0"
-              className="h-8 text-sm"
               step="any"
+              type="number"
+              value={value}
             />
-            <FlowHandle type="source" position={Position.Right} category="number" />
+            <FlowHandle
+              category="number"
+              position={Position.Right}
+              type="source"
+            />
           </div>
         </div>
       </CardContent>
@@ -72,4 +76,3 @@ const InputNumberNode = ({ data, id, selected }: InputNumberNodeProps) => {
 };
 
 export default InputNumberNode;
-
