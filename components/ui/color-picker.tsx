@@ -4,7 +4,9 @@ import { useCallback, useMemo, useState } from "react";
 import useMeasure from "react-use-measure";
 
 export function ColorPicker({value, defaultValue, onChange}: {value?: string, defaultValue?: string, onChange?: (value: string) => void}) {
-  const [ref, { width, height }] = useMeasure();
+  const [ref, { width, height }] = useMeasure({
+    offsetSize: true,
+  });
 
   const [isDragging, setIsDragging] = useState(false);
   const [dragPosition, setDragPosition] = useState<{ x: number; y: number } | null>(null);
