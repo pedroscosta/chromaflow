@@ -1,7 +1,7 @@
+import { ThemeProvider } from "@/components/ThemeProvider";
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -9,8 +9,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Parametric Color Palette Generator",
-  description: "Node-based parametric color palette generator using OKLCH",
+  title: "chromaflow",
+  description: "A visual flow editor for creating parametric color palettes and generating CSS variables",
 };
 
 export default function RootLayout({

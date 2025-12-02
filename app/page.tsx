@@ -112,12 +112,12 @@ export default function Home() {
     <div className="flex flex-col h-screen w-full bg-background">
       <nav className="w-full border-b bg-sidebar px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-6">
-          <h1 className="text-lg font-semibold">Chromaflow</h1>
+          <h1 className="text-lg font-semibold">chromaflow</h1>
           <span
             className="text-sm text-muted-foreground"
-            aria-label="Made with love by @pedroscosta on Twitter"
+            aria-label="made with love by @pedroscosta on Twitter"
           >
-            Made with <Heart className="inline-block size-4 -mt-0.5" /> by{" "}
+            made with <Heart className="inline-block size-4 -mt-0.5" /> by{" "}
             <Link href="https://x.com/pedroscosta_" target="_blank" className="font-medium underline hover:text-primary transition-colors">@pedroscosta</Link>
           </span>
           <Link href="https://github.com/pedroscosta/chromaflow" target="_blank" className="text-sm text-muted-foreground underline hover:text-primary transition-colors">GitHub</Link>

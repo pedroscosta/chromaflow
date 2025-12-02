@@ -1,6 +1,6 @@
 <div align="center">
 
-# Chromaflow
+# chromaflow
 
 **A visual flow editor for creating parametric color palettes and generating CSS variables**
 
