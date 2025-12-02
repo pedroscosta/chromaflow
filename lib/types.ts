@@ -27,28 +27,28 @@ export type OperationType =
   | "multiply"
   | "divide";
 
-export interface InputColorData {
+export type InputColorData = {
   name: string;
   color: string; // OKLCH format
   [key: string]: unknown;
-}
+};
 
-export interface InputNumberData {
+export type InputNumberData = {
   name: string;
   value: number;
   [key: string]: unknown;
-}
+};
 
-export interface OutputData {
+export type OutputData = {
   name: string;
   inputNodeId: string; // Node ID to output
   [key: string]: unknown;
-}
+};
 
-export interface LightenDarkenData {
+export type LightenDarkenData = {
   isDarken?: boolean;
   [key: string]: unknown;
-}
+};
 
 export type NodeData =
   | InputColorData
@@ -64,7 +64,7 @@ export interface CustomNode extends Node {
 
 export interface CustomEdge extends Edge {}
 
-export interface FlowState {
+export type FlowState = {
   nodes: CustomNode[];
   edges: CustomEdge[];
-}
+};

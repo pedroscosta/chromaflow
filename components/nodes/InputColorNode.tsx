@@ -1,15 +1,15 @@
 "use client";
 
-import { type NodeProps, Position } from "@xyflow/react";
-import Color from "colorjs.io";
-import { useCallback, useEffect, useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { KebabCaseInput } from "@/components/ui/kebab-case-input";
 import { Label } from "@/components/ui/label";
 import { useFlowStore } from "@/lib/store";
 import type { InputColorData } from "@/lib/types";
+import { type NodeProps, Position } from "@xyflow/react";
+import Color from "colorjs.io";
+import { useCallback, useEffect, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import FlowHandle from "../FlowHandle";
 import { Button } from "../ui/button";
 import { ColorPicker } from "../ui/color-picker";

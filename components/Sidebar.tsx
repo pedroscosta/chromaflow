@@ -1,5 +1,7 @@
 "use client";
 
+import { Card, CardContent } from "@/components/ui/card";
+import type { NodeType } from "@/lib/types";
 import {
   Blend,
   Download,
@@ -12,12 +14,10 @@ import {
   X,
 } from "lucide-react";
 import { useCallback } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import type { NodeType } from "@/lib/types";
 
-interface SidebarProps {
+type SidebarProps = {
   onDragStart: (event: React.DragEvent, nodeType: NodeType) => void;
-}
+};
 
 const Sidebar = ({ onDragStart }: SidebarProps) => {
   const handleDragStart = useCallback(

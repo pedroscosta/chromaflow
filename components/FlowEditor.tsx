@@ -1,5 +1,6 @@
 "use client";
 
+import { useFlowStore } from "@/lib/store";
 import {
   Background,
   type ColorMode,
@@ -11,7 +12,6 @@ import {
 } from "@xyflow/react";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useFlowStore } from "@/lib/store";
 import AddNode from "./nodes/AddNode";
 import InputColorNode from "./nodes/InputColorNode";
 import InputNumberNode from "./nodes/InputNumberNode";
@@ -58,7 +58,9 @@ const FlowEditor = () => {
   const onDrop = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault();
-      if (!reactFlowWrapper.current) return;
+      if (!reactFlowWrapper.current) {
+        return;
+      }
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       onDropFromStore(event, reactFlowBounds);
     },
@@ -75,8 +77,10 @@ const FlowEditor = () => {
       <div className="h-full w-full" ref={reactFlowWrapper}>
         <ReactFlow
           colorMode={mounted ? ((theme as ColorMode) ?? "system") : undefined}
+          // biome-ignore lint/suspicious/noExplicitAny: ReactFlow requires specific edge/node types that don't match our CustomEdge/CustomNode exactly
           edges={edges as any}
           fitView
+          // biome-ignore lint/suspicious/noExplicitAny: ReactFlow requires specific edge/node types that don't match our CustomEdge/CustomNode exactly
           nodes={nodes as any}
           nodeTypes={nodeTypes}
           onConnect={onConnect}

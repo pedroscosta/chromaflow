@@ -1,8 +1,5 @@
 "use client";
 
-import { Check, Code2, Copy, Download, Heart, Upload } from "lucide-react";
-import Link from "next/link";
-import { useCallback, useMemo, useRef } from "react";
 import FlowEditor from "@/components/FlowEditor";
 import Sidebar from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
@@ -16,6 +13,9 @@ import {
 import { generateCSSVariables } from "@/lib/css-generator";
 import { useFlowStore } from "@/lib/store";
 import type { CustomEdge, CustomNode, NodeType } from "@/lib/types";
+import { Check, Code2, Copy, Download, Heart, Upload } from "lucide-react";
+import Link from "next/link";
+import { useCallback, useMemo, useRef } from "react";
 
 export default function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -73,7 +73,9 @@ export default function Home() {
   const handleFileChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
-      if (!file) return;
+      if (!file) {
+        return;
+      }
 
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -88,11 +90,13 @@ export default function Home() {
           if (data.nodes && data.edges) {
             importState(data.nodes, data.edges);
           } else {
+            // biome-ignore lint/suspicious/noAlert: user feedback for invalid file format
             alert(
               "Invalid file format. The file must contain nodes and edges."
             );
           }
         } catch (error) {
+          // biome-ignore lint/suspicious/noAlert: user feedback for parse errors
           alert("Failed to parse JSON file. Please check the file format.");
           console.error("Import error:", error);
         }
@@ -120,10 +124,7 @@ export default function Home() {
       <nav className="flex w-full items-center justify-between border-b bg-sidebar px-4 py-3">
         <div className="flex items-center gap-6">
           <h1 className="font-semibold text-lg">chromaflow</h1>
-          <span
-            aria-label="made with love by @pedroscosta on Twitter"
-            className="text-muted-foreground text-sm"
-          >
+          <span className="text-muted-foreground text-sm">
             made with <Heart className="-mt-0.5 inline-block size-4" /> by{" "}
             <Link
               className="font-medium underline transition-colors hover:text-primary"

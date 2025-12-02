@@ -1,3 +1,5 @@
+import { generateNodeId } from "@/lib/css-generator";
+import type { CustomEdge, CustomNode, NodeType } from "@/lib/types";
 import {
   addEdge,
   applyEdgeChanges,
@@ -8,10 +10,8 @@ import {
 } from "@xyflow/react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { generateNodeId } from "@/lib/css-generator";
-import type { CustomEdge, CustomNode, NodeType } from "@/lib/types";
 
-interface FlowStore {
+type FlowStore = {
   // State
   nodes: CustomNode[];
   edges: CustomEdge[];
@@ -21,6 +21,7 @@ interface FlowStore {
   // Actions
   setNodes: (nodes: CustomNode[]) => void;
   setEdges: (edges: CustomEdge[]) => void;
+  // biome-ignore lint/suspicious/noExplicitAny: we need to update the node data
   updateNodeData: (nodeId: string, newData: any) => void;
   handleNodesChange: (changes: NodeChange[]) => void;
   handleEdgesChange: (changes: EdgeChange[]) => void;
@@ -29,7 +30,7 @@ interface FlowStore {
   setIsExportDialogOpen: (open: boolean) => void;
   setCopied: (copied: boolean) => void;
   importState: (nodes: CustomNode[], edges: CustomEdge[]) => void;
-}
+};
 
 export const useFlowStore = create<FlowStore>()(
   persist(
@@ -62,16 +63,13 @@ export const useFlowStore = create<FlowStore>()(
 
       handleEdgesChange: (changes) => {
         const { edges } = get();
-        const updatedEdges = applyEdgeChanges(
-          changes,
-          edges as any
-        ) as CustomEdge[];
+        const updatedEdges = applyEdgeChanges<CustomEdge>(changes, edges);
         set({ edges: updatedEdges });
       },
 
       onConnect: (params) => {
         const { edges } = get();
-        const newEdge = addEdge(params, edges as any) as CustomEdge[];
+        const newEdge = addEdge<CustomEdge>(params, edges);
         set({ edges: newEdge });
       },
 
@@ -79,7 +77,9 @@ export const useFlowStore = create<FlowStore>()(
         const nodeType = event.dataTransfer.getData(
           "application/reactflow"
         ) as NodeType;
-        if (!nodeType) return;
+        if (!nodeType) {
+          return;
+        }
 
         const position = {
           x: event.clientX - reactFlowBounds.left - 100,
@@ -90,22 +90,34 @@ export const useFlowStore = create<FlowStore>()(
           id: generateNodeId(),
           type: nodeType,
           position,
-          data:
-            nodeType === "inputColor"
-              ? { name: "", color: "oklch(0.5 0.2 180)" }
-              : nodeType === "inputNumber"
-                ? { name: "", value: 0 }
-                : nodeType === "output"
-                  ? { name: "", inputNodeId: "" }
-                  : nodeType === "lighten" || nodeType === "darken"
-                    ? { isDarken: nodeType === "darken" }
-                    : nodeType === "saturate" || nodeType === "desaturate"
-                      ? { isDesaturate: nodeType === "desaturate" }
-                      : nodeType === "add" || nodeType === "subtract"
-                        ? { isSubtract: nodeType === "subtract" }
-                        : nodeType === "multiply" || nodeType === "divide"
-                          ? { isDivide: nodeType === "divide" }
-                          : {},
+          data: (() => {
+            switch (nodeType) {
+              case "inputColor":
+                return { name: "", color: "oklch(0.5 0.2 180)" };
+              case "inputNumber":
+                return { name: "", value: 0 };
+              case "output":
+                return { name: "", inputNodeId: "" };
+              case "lighten":
+                return { isDarken: false };
+              case "darken":
+                return { isDarken: true };
+              case "saturate":
+                return { isDesaturate: false };
+              case "desaturate":
+                return { isDesaturate: true };
+              case "add":
+                return { isSubtract: false };
+              case "subtract":
+                return { isSubtract: true };
+              case "multiply":
+                return { isDivide: false };
+              case "divide":
+                return { isDivide: true };
+              default:
+                return {};
+            }
+          })(),
         };
 
         const { nodes } = get();

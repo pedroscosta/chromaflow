@@ -1,9 +1,9 @@
 import type { CustomEdge, CustomNode, OperationType } from "./types";
 
-export interface CSSVariable {
+export type CSSVariable = {
   name: string;
   value: string;
-}
+};
 
 const generateNodeId = () =>
   `node_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -67,7 +67,7 @@ export const generateCSSVariables = (
 
 const generateExpression = (
   node: CustomNode,
-  allNodes: CustomNode[],
+  _allNodes: CustomNode[],
   edges: CustomEdge[],
   nodeMap: Map<string, CustomNode>
 ): string => {
@@ -118,8 +118,10 @@ const generateExpression = (
 
     const inputs = inputEdges.map((edge) => {
       const inputNode = nodeMap.get(edge.source);
-      if (!inputNode) return "";
-      return generateExpression(inputNode, allNodes, edges, nodeMap);
+      if (!inputNode) {
+        return "";
+      }
+      return generateExpression(inputNode, _allNodes, edges, nodeMap);
     });
 
     return generateOperationExpression(operation, inputs);
@@ -132,7 +134,9 @@ const generateOperationExpression = (
   operation: OperationType,
   inputs: string[]
 ): string => {
-  if (inputs.length === 0) return "";
+  if (inputs.length === 0) {
+    return "";
+  }
 
   // Color operations that need a color input and optionally an amount
   const needsAmount = [

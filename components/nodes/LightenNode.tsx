@@ -1,8 +1,5 @@
 "use client";
 
-import { type NodeProps, Position } from "@xyflow/react";
-import { ArrowDownUp } from "lucide-react";
-import { useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -13,6 +10,9 @@ import {
 } from "@/components/ui/tooltip";
 import { useFlowStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { type NodeProps, Position } from "@xyflow/react";
+import { ArrowDownUp } from "lucide-react";
+import { useCallback, useMemo } from "react";
 import FlowHandle from "../FlowHandle";
 
 interface LightenNodeProps extends NodeProps {
@@ -41,7 +41,10 @@ const LightenNode = ({ id, selected, type, data }: LightenNodeProps) => {
   return (
     <TooltipProvider>
       <Card
-        className={cn("min-w-[200px] p-0", selected && "ring-2 ring-primary")}
+        className={cn(
+          "min-w-[200px] p-0",
+          selected ? "ring-2 ring-primary" : ""
+        )}
       >
         <CardContent className="flex flex-col gap-3 p-0 pt-4">
           <div className="space-y-2 px-4">

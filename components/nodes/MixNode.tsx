@@ -1,15 +1,15 @@
 "use client";
 
-import { type NodeProps, Position } from "@xyflow/react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { type NodeProps, Position } from "@xyflow/react";
 import FlowHandle from "../FlowHandle";
 
 interface MixNodeProps extends NodeProps {
   data: Record<string, never>;
 }
 
-const MixNode = ({ id, selected }: MixNodeProps) => (
+const MixNode = ({ selected }: MixNodeProps) => (
   <Card className={cn("min-w-[200px] p-0", selected && "ring-2 ring-primary")}>
     <CardContent className="flex flex-col gap-3 p-0 pt-4">
       <div className="space-y-2 px-4">

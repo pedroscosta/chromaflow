@@ -1,5 +1,6 @@
 "use client";
 
+// biome-ignore lint/style/useFilenamingConvention: component name matches React conventions
 import { type NodeProps, Position } from "@xyflow/react";
 import { useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,7 +27,7 @@ const OutputNode = ({ data, id, selected }: OutputNodeProps) => {
 
   return (
     <Card
-      className={cn("min-w-[200px] p-0", selected && "ring-2 ring-primary")}
+      className={cn("min-w-[200px] p-0", selected ? "ring-2 ring-primary" : "")}
     >
       <CardContent className="space-y-3 px-4 py-4 text-left">
         <div className="space-y-2">
