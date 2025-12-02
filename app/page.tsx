@@ -13,7 +13,8 @@ import {
 import { generateCSSVariables } from "@/lib/css-generator";
 import { useFlowStore } from "@/lib/store";
 import { CustomEdge, CustomNode, NodeType } from "@/lib/types";
-import { Check, Code2, Copy, Download, Upload } from "lucide-react";
+import { Check, Code2, Copy, Download, Heart, Upload } from "lucide-react";
+import Link from "next/link";
 import { useCallback, useMemo, useRef } from "react";
 
 export default function Home() {
@@ -110,7 +111,17 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen w-full bg-background">
       <nav className="w-full border-b bg-sidebar px-4 py-3 flex items-center justify-between">
-        <h1 className="text-lg font-semibold">Parametric Palette Editor</h1>
+        <div className="flex items-center gap-6">
+          <h1 className="text-lg font-semibold">Parametric Palette Editor</h1>
+          <span
+            className="text-sm text-muted-foreground"
+            aria-label="Made with love by @pedroscosta on Twitter"
+          >
+            Made with <Heart className="inline-block size-4 -mt-0.5" /> by{" "}
+            <Link href="https://x.com/pedroscosta_" target="_blank" className="font-medium underline hover:text-primary transition-colors">@pedroscosta</Link>
+          </span>
+          <Link href="https://github.com/pedroscosta/parametric-palette" target="_blank" className="text-sm text-muted-foreground underline hover:text-primary transition-colors">GitHub</Link>
+        </div>
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-0 border rounded-md overflow-hidden">
             <Button
