@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+
+# Parametric Palette Editor
+
+**A visual flow editor for creating parametric color palettes and generating CSS variables**
+
+[![X (Twitter)](https://img.shields.io/badge/X-@pedroscosta_-1DA1F2?style=flat&logo=x&logoColor=white)](https://x.com/pedroscosta_)
+
+</div>
+
+---
+
+## Features
+
+- **Visual Flow Editor**: Drag and drop nodes to create complex color transformations
+- **Color Operations**: Mix, lighten, saturate, rotate, and multiply colors
+- **CSS Variable Generation**: Automatically generate CSS custom properties from your palette
+- **Import/Export**: Save and load your palette configurations as JSON
+- **Real-time Preview**: See your color changes update in real-time
+- **Modern UI**: Built with Next.js, React Flow, and Tailwind CSS
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ or Bun
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/pedroscosta/parametric-palette.git
+cd parametric-palette
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+bun install
+```
+
+3. Run the development server:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 # or
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Add Nodes**: Drag nodes from the sidebar onto the canvas
+2. **Connect Nodes**: Connect output handles to input handles to create color transformations
+3. **Configure**: Click on nodes to configure their properties
+4. **Export**: Click "Export CSS" to generate CSS variables from your palette
+5. **Save/Load**: Use the Export/Import buttons to save and load your configurations
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- **Framework**: [Next.js](https://nextjs.org) 16
+- **UI Library**: [React](https://react.dev) 19
+- **Flow Editor**: [React Flow](https://xyflow.com)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com)
+- **UI Components**: [Radix UI](https://www.radix-ui.com)
+- **State Management**: [Zustand](https://zustand-demo.pmnd.rs)
+- **Color Processing**: [Color.js](https://colorjs.io)
+- **Icons**: [Lucide React](https://lucide.dev)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Available Nodes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Input Color**: Define base colors
+- **Input Number**: Provide numeric values for operations
+- **Mix**: Blend two colors together
+- **Lighten**: Lighten a color by a percentage
+- **Saturate**: Adjust color saturation
+- **Rotate**: Rotate hue in HSL color space
+- **Multiply**: Multiply color channels
+- **Add**: Add values to color channels
+- **Output**: Generate CSS variable names
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is open source and available under the [MIT License](LICENSE).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Acknowledgments
+
+- Built by [@pedroscosta_](https://x.com/pedroscosta_)
+- Parametric concept inspired by [Linear](https://linear.app/now/how-we-redesigned-the-linear-ui#2.-appearance) and [Define](https://x.com/define_app/status/1995244617831502225)
+- Color picker inspired by [Paper](https://paper.design)
