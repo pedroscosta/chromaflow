@@ -72,7 +72,7 @@ const InputColorNode = ({ data, id, selected }: InputColorNodeProps) => {
               <PopoverTrigger asChild>
                 <Button variant="outline" size="icon" className="size-8" style={{ background: getHexColor() }} />
               </PopoverTrigger>
-              <PopoverContent>
+              <PopoverContent className="w-auto">
                 <ColorPicker onChange={(newColor) => updateNodeData(id, { color: newColor })} value={color} />
               </PopoverContent>
             </Popover>
