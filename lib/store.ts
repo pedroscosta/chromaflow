@@ -1,3 +1,6 @@
+import { generateNodeId } from "@/lib/css-generator";
+import { initialValue } from "@/lib/initial-value";
+import type { CustomEdge, CustomNode, NodeType } from "@/lib/types";
 import {
   addEdge,
   applyEdgeChanges,
@@ -8,8 +11,6 @@ import {
 } from "@xyflow/react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { generateNodeId } from "@/lib/css-generator";
-import type { CustomEdge, CustomNode, NodeType } from "@/lib/types";
 
 type FlowStore = {
   // State
@@ -136,6 +137,13 @@ export const useFlowStore = create<FlowStore>()(
         nodes: state.nodes,
         edges: state.edges,
       }),
+      // Initialize default state if this is the first time (empty persisted state)
+      onRehydrateStorage: () => (state) => {
+        if (state && state.nodes.length === 0 && state.edges.length === 0) {
+          state.nodes = initialValue.nodes as CustomNode[];
+          state.edges = initialValue.edges as CustomEdge[];
+        }
+      },
     }
   )
 );
