@@ -1,5 +1,8 @@
 "use client";
 
+import { Check, Code2, Copy, Download, Heart, Upload } from "lucide-react";
+import Link from "next/link";
+import { useCallback, useMemo, useRef } from "react";
 import FlowEditor from "@/components/FlowEditor";
 import Sidebar from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
@@ -13,9 +16,6 @@ import {
 import { generateCSSVariables } from "@/lib/css-generator";
 import { useFlowStore } from "@/lib/store";
 import type { CustomEdge, CustomNode, NodeType } from "@/lib/types";
-import { Check, Code2, Copy, Download, Heart, Upload } from "lucide-react";
-import Link from "next/link";
-import { useCallback, useMemo, useRef } from "react";
 
 export default function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);

@@ -1,13 +1,13 @@
 "use client";
 
+import { type NodeProps, Position } from "@xyflow/react";
+import { useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { KebabCaseInput } from "@/components/ui/kebab-case-input";
 import { Label } from "@/components/ui/label";
 import { useFlowStore } from "@/lib/store";
 import type { InputNumberData } from "@/lib/types";
-import { type NodeProps, Position } from "@xyflow/react";
-import { useCallback } from "react";
 import FlowHandle from "../FlowHandle";
 
 interface InputNumberNodeProps extends NodeProps {

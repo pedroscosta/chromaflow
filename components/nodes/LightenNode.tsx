@@ -8,9 +8,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { computeNodeOutput } from "@/lib/node-compute";
 import { useFlowStore } from "@/lib/store";
-import { cn } from "@/lib/utils";
+import { cn, formatOklch } from "@/lib/utils";
 import { type NodeProps, Position } from "@xyflow/react";
+import Color from "colorjs.io";
 import { ArrowDownUp } from "lucide-react";
 import { useCallback, useMemo } from "react";
 import FlowHandle from "../FlowHandle";
@@ -21,6 +23,8 @@ interface LightenNodeProps extends NodeProps {
 
 const LightenNode = ({ id, selected, type, data }: LightenNodeProps) => {
   const updateNodeData = useFlowStore((state) => state.updateNodeData);
+  const nodes = useFlowStore((state) => state.nodes);
+  const edges = useFlowStore((state) => state.edges);
 
   // Initialize mode based on node type or existing data
   const isDarken = useMemo(() => {
@@ -37,6 +41,29 @@ const LightenNode = ({ id, selected, type, data }: LightenNodeProps) => {
 
   const modeLabel = isDarken ? "Darken" : "Lighten";
   const tooltipText = isDarken ? "Switch to Lighten" : "Switch to Darken";
+
+  const outputValue = useMemo(() => {
+    const currentNode = nodes.find((n) => n.id === id);
+    if (!currentNode) {
+      return null;
+    }
+    return computeNodeOutput(currentNode, nodes, edges);
+  }, [id, nodes, edges]);
+
+  const outputColor = useMemo(() => {
+    if (typeof outputValue !== "string") {
+      return null;
+    }
+    try {
+      const color = new Color(outputValue);
+      return color.to("srgb").toString({ format: "hex" });
+    } catch {
+      return null;
+    }
+  }, [outputValue]);
+
+  const outputOklch =
+    typeof outputValue === "string" ? formatOklch(outputValue) : null;
 
   return (
     <TooltipProvider>
@@ -100,6 +127,21 @@ const LightenNode = ({ id, selected, type, data }: LightenNodeProps) => {
               </div>
             </div>
           </div>
+          {outputOklch && (
+            <div className="border-t px-4 py-2">
+              <div className="flex items-center gap-2">
+                {outputColor && (
+                  <div
+                    className="size-6 shrink-0 rounded border"
+                    style={{ backgroundColor: outputColor }}
+                  />
+                )}
+                <code className="font-mono text-muted-foreground text-xs">
+                  {outputOklch}
+                </code>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </TooltipProvider>

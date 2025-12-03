@@ -1,5 +1,8 @@
 "use client";
 
+import { type NodeProps, Position } from "@xyflow/react";
+import { ArrowDownUp } from "lucide-react";
+import { useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -8,11 +11,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { computeNodeOutput } from "@/lib/node-compute";
 import { useFlowStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
-import { type NodeProps, Position } from "@xyflow/react";
-import { ArrowDownUp } from "lucide-react";
-import { useCallback, useMemo } from "react";
 import FlowHandle from "../FlowHandle";
 
 interface MultiplyNodeProps extends NodeProps {
@@ -21,6 +22,8 @@ interface MultiplyNodeProps extends NodeProps {
 
 const MultiplyNode = ({ id, selected, type, data }: MultiplyNodeProps) => {
   const updateNodeData = useFlowStore((state) => state.updateNodeData);
+  const nodes = useFlowStore((state) => state.nodes);
+  const edges = useFlowStore((state) => state.edges);
 
   // Initialize mode based on node type or existing data
   const isDivide = useMemo(() => {
@@ -37,6 +40,14 @@ const MultiplyNode = ({ id, selected, type, data }: MultiplyNodeProps) => {
 
   const modeLabel = isDivide ? "Divide" : "Multiply";
   const tooltipText = isDivide ? "Switch to Multiply" : "Switch to Divide";
+
+  const outputValue = useMemo(() => {
+    const currentNode = nodes.find((n) => n.id === id);
+    if (!currentNode) return null;
+    return computeNodeOutput(currentNode, nodes, edges);
+  }, [id, nodes, edges]);
+
+  const outputNumber = typeof outputValue === "number" ? outputValue : null;
 
   return (
     <TooltipProvider>
@@ -97,6 +108,13 @@ const MultiplyNode = ({ id, selected, type, data }: MultiplyNodeProps) => {
               </div>
             </div>
           </div>
+          {outputNumber !== null && (
+            <div className="border-t px-4 py-2">
+              <div className="font-mono text-muted-foreground text-sm">
+                {outputNumber}
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </TooltipProvider>
