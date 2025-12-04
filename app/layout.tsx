@@ -1,6 +1,6 @@
+import { ThemeProvider } from "@/components/ThemeProvider";
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const geistMono = Geist_Mono({
@@ -21,6 +21,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          async
+          crossOrigin="anonymous"
+          data-client-id="bGWXubvTBjxhiNaf5qOxZ"
+          data-track-attributes="true"
+          data-track-outgoing-links="true"
+          src="https://cdn.databuddy.cc/databuddy.js"
+        />
+      </head>
       <body className={`${geistMono.variable} font-mono antialiased`}>
         <ThemeProvider
           attribute="class"
