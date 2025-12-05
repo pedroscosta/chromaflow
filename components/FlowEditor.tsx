@@ -1,5 +1,6 @@
 "use client";
 
+import { useFlowStore } from "@/lib/store";
 import {
   Background,
   type ColorMode,
@@ -7,11 +8,11 @@ import {
   MiniMap,
   type NodeTypes,
   ReactFlow,
+  type ReactFlowInstance,
   ReactFlowProvider,
 } from "@xyflow/react";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useFlowStore } from "@/lib/store";
 import AddNode from "./nodes/AddNode";
 import ComplementaryNode from "./nodes/ComplementaryNode";
 import InputColorNode from "./nodes/InputColorNode";
@@ -42,8 +43,9 @@ const nodeTypes: NodeTypes = {
   divide: MultiplyNode,
 };
 
-const FlowEditor = () => {
+const FlowEditorInner = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
+  const reactFlowInstance = useRef<ReactFlowInstance | null>(null);
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -59,14 +61,21 @@ const FlowEditor = () => {
     setMounted(true);
   }, []);
 
+  const onInit = useCallback((instance: ReactFlowInstance) => {
+    reactFlowInstance.current = instance;
+  }, []);
+
   const onDrop = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault();
-      if (!reactFlowWrapper.current) {
+      if (!reactFlowInstance.current) {
         return;
       }
-      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-      onDropFromStore(event, reactFlowBounds);
+      const position = reactFlowInstance.current.screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+      onDropFromStore(event, position);
     },
     [onDropFromStore]
   );
@@ -77,29 +86,34 @@ const FlowEditor = () => {
   }, []);
 
   return (
-    <ReactFlowProvider>
-      <div className="h-full w-full" ref={reactFlowWrapper}>
-        <ReactFlow
-          colorMode={mounted ? ((theme as ColorMode) ?? "system") : undefined}
-          // biome-ignore lint/suspicious/noExplicitAny: ReactFlow requires specific edge/node types that don't match our CustomEdge/CustomNode exactly
-          edges={edges as any}
-          fitView
-          // biome-ignore lint/suspicious/noExplicitAny: ReactFlow requires specific edge/node types that don't match our CustomEdge/CustomNode exactly
-          nodes={nodes as any}
-          nodeTypes={nodeTypes}
-          onConnect={onConnect}
-          onDragOver={onDragOver}
-          onDrop={onDrop}
-          onEdgesChange={handleEdgesChange}
-          onNodesChange={handleNodesChange}
-        >
-          <Background />
-          <Controls />
-          <MiniMap />
-        </ReactFlow>
-      </div>
-    </ReactFlowProvider>
+    <div className="h-full w-full" ref={reactFlowWrapper}>
+      <ReactFlow
+        colorMode={mounted ? ((theme as ColorMode) ?? "system") : undefined}
+        // biome-ignore lint/suspicious/noExplicitAny: ReactFlow requires specific edge/node types that don't match our CustomEdge/CustomNode exactly
+        edges={edges as any}
+        fitView
+        // biome-ignore lint/suspicious/noExplicitAny: ReactFlow requires specific edge/node types that don't match our CustomEdge/CustomNode exactly
+        nodes={nodes as any}
+        nodeTypes={nodeTypes}
+        onConnect={onConnect}
+        onDragOver={onDragOver}
+        onDrop={onDrop}
+        onEdgesChange={handleEdgesChange}
+        onInit={onInit}
+        onNodesChange={handleNodesChange}
+      >
+        <Background />
+        <Controls />
+        <MiniMap />
+      </ReactFlow>
+    </div>
   );
 };
+
+const FlowEditor = () => (
+  <ReactFlowProvider>
+    <FlowEditorInner />
+  </ReactFlowProvider>
+);
 
 export default FlowEditor;

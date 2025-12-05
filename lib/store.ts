@@ -27,7 +27,7 @@ type FlowStore = {
   handleNodesChange: (changes: NodeChange[]) => void;
   handleEdgesChange: (changes: EdgeChange[]) => void;
   onConnect: (params: Connection) => void;
-  onDrop: (event: React.DragEvent, reactFlowBounds: DOMRect) => void;
+  onDrop: (event: React.DragEvent, position: { x: number; y: number }) => void;
   setIsExportDialogOpen: (open: boolean) => void;
   setCopied: (copied: boolean) => void;
   importState: (nodes: CustomNode[], edges: CustomEdge[]) => void;
@@ -74,18 +74,13 @@ export const useFlowStore = create<FlowStore>()(
         set({ edges: newEdge });
       },
 
-      onDrop: (event, reactFlowBounds) => {
+      onDrop: (event, position) => {
         const nodeType = event.dataTransfer.getData(
           "application/reactflow"
         ) as NodeType;
         if (!nodeType) {
           return;
         }
-
-        const position = {
-          x: event.clientX - reactFlowBounds.left - 100,
-          y: event.clientY - reactFlowBounds.top - 50,
-        };
 
         const newNode: CustomNode = {
           id: generateNodeId(),
