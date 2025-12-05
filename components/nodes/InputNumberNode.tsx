@@ -1,7 +1,7 @@
 "use client";
 
 import { type NodeProps, Position } from "@xyflow/react";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { KebabCaseInput } from "@/components/ui/kebab-case-input";
@@ -16,16 +16,18 @@ interface InputNumberNodeProps extends NodeProps {
 
 const InputNumberNode = ({ data, id, selected }: InputNumberNodeProps) => {
   const updateNodeData = useFlowStore((state) => state.updateNodeData);
-  const value = data.value?.toString() || "0";
   const name = data.name || "";
-
-  const handleValueChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const numValue = Number.parseFloat(e.target.value) || 0;
-      updateNodeData(id, { value: numValue });
-    },
-    [id, updateNodeData]
+  const [inputValue, setInputValue] = useState<string>(
+    data.value?.toString() || "0"
   );
+  const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    if (isTyping) {
+      return;
+    }
+    setInputValue(data.value?.toString() || "0");
+  }, [data.value, isTyping]);
 
   const handleNameChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,11 +59,20 @@ const InputNumberNode = ({ data, id, selected }: InputNumberNodeProps) => {
             <Input
               className="h-8 text-sm"
               id={`value-${id}`}
-              onChange={handleValueChange}
+              onBlur={() => setIsTyping(false)}
+              onChange={(e) => {
+                const newValue = e.target.value
+                  .replaceAll(",", ".")
+                  .replace(/[^0-9.-]/g, "");
+                setInputValue(newValue);
+                updateNodeData(id, {
+                  value: Number.parseFloat(newValue),
+                });
+              }}
+              onFocus={() => setIsTyping(true)}
               placeholder="0"
-              step="any"
-              type="number"
-              value={value}
+              type="text"
+              value={inputValue}
             />
             <FlowHandle
               category="number"
