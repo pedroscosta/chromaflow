@@ -1,6 +1,5 @@
 "use client";
 
-import { useFlowStore } from "@/lib/store";
 import {
   Background,
   type ColorMode,
@@ -13,6 +12,7 @@ import {
 } from "@xyflow/react";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useFlowStore } from "@/lib/store";
 import AddNode from "./nodes/AddNode";
 import ComplementaryNode from "./nodes/ComplementaryNode";
 import InputColorNode from "./nodes/InputColorNode";
