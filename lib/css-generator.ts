@@ -91,6 +91,8 @@ const generateExpression = (
     "desaturate",
     "rotate",
     "mix",
+    "invert",
+    "complementary",
     "add",
     "subtract",
     "multiply",
@@ -170,6 +172,18 @@ const generateOperationExpression = (
     case "mix":
       if (inputs.length >= 2) {
         return `color-mix(in oklch, ${inputs[0]}, ${inputs[1]})`;
+      }
+      return inputs[0] || "";
+    case "invert":
+      if (inputs.length >= 1) {
+        const colorInput = inputs[0] || "oklch(0.5 0.2 180)";
+        return `oklch(from ${colorInput} calc(1 - l) c h)`;
+      }
+      return inputs[0] || "";
+    case "complementary":
+      if (inputs.length >= 1) {
+        const colorInput = inputs[0] || "oklch(0.5 0.2 180)";
+        return `oklch(from ${colorInput} l c calc(h + 180))`;
       }
       return inputs[0] || "";
     case "add":

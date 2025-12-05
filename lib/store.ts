@@ -1,6 +1,3 @@
-import { generateNodeId } from "@/lib/css-generator";
-import { initialValue } from "@/lib/initial-value";
-import type { CustomEdge, CustomNode, NodeType } from "@/lib/types";
 import {
   addEdge,
   applyEdgeChanges,
@@ -11,6 +8,9 @@ import {
 } from "@xyflow/react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { generateNodeId } from "@/lib/css-generator";
+import { initialValue } from "@/lib/initial-value";
+import type { CustomEdge, CustomNode, NodeType } from "@/lib/types";
 
 type FlowStore = {
   // State

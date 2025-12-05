@@ -25,6 +25,8 @@ export const computeNodeOutput = (
     "desaturate",
     "rotate",
     "mix",
+    "invert",
+    "complementary",
     "add",
     "subtract",
     "multiply",
@@ -182,6 +184,48 @@ const computeOperationValue = (
         return mixed.toString({ format: "oklch" });
       } catch {
         return color1;
+      }
+    }
+    case "invert": {
+      const colorInput = inputs[0];
+
+      if (typeof colorInput !== "string") {
+        return null;
+      }
+
+      try {
+        const color = new Color(colorInput);
+        const oklch = color.oklch;
+        // Invert lightness: 1 - l
+        const invertedColor = new Color("oklch", [
+          1 - oklch.l,
+          oklch.c,
+          oklch.h ?? 0,
+        ]);
+        return invertedColor.toString({ format: "oklch" });
+      } catch {
+        return colorInput;
+      }
+    }
+    case "complementary": {
+      const colorInput = inputs[0];
+
+      if (typeof colorInput !== "string") {
+        return null;
+      }
+
+      try {
+        const color = new Color(colorInput);
+        const oklch = color.oklch;
+        // Rotate hue by 180 degrees for complementary color
+        const complementaryColor = new Color("oklch", [
+          oklch.l,
+          oklch.c,
+          ((oklch.h ?? 0) + 180) % 360,
+        ]);
+        return complementaryColor.toString({ format: "oklch" });
+      } catch {
+        return colorInput;
       }
     }
     case "add": {

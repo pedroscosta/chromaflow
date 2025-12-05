@@ -2,8 +2,10 @@
 
 import {
   Blend,
+  Circle,
   Download,
   Droplet,
+  FlipHorizontal,
   Hash,
   Palette,
   Plus,
@@ -67,6 +69,18 @@ const Sidebar = ({ onDragStart }: SidebarProps) => {
       type: "mix",
       label: "Mix",
       icon: <Blend className="h-3.5 w-3.5" />,
+      category: "Color Operations",
+    },
+    {
+      type: "invert",
+      label: "Invert",
+      icon: <FlipHorizontal className="h-3.5 w-3.5" />,
+      category: "Color Operations",
+    },
+    {
+      type: "complementary",
+      label: "Complementary",
+      icon: <Circle className="h-3.5 w-3.5" />,
       category: "Color Operations",
     },
     {

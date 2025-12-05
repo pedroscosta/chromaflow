@@ -13,8 +13,10 @@ import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useFlowStore } from "@/lib/store";
 import AddNode from "./nodes/AddNode";
+import ComplementaryNode from "./nodes/ComplementaryNode";
 import InputColorNode from "./nodes/InputColorNode";
 import InputNumberNode from "./nodes/InputNumberNode";
+import InvertNode from "./nodes/InvertNode";
 import LightenNode from "./nodes/LightenNode";
 import MixNode from "./nodes/MixNode";
 import MultiplyNode from "./nodes/MultiplyNode";
@@ -32,6 +34,8 @@ const nodeTypes: NodeTypes = {
   desaturate: SaturateNode,
   rotate: RotateNode,
   mix: MixNode,
+  invert: InvertNode,
+  complementary: ComplementaryNode,
   add: AddNode,
   subtract: AddNode,
   multiply: MultiplyNode,
